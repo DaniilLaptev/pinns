@@ -119,7 +119,7 @@ $$
 
 \section{Решение дифференциальных уравнений} \label{section:diffeqsolving}
 
-\subsection{Гармонический осциллятор с затуханием}
+\subsection{Гармонический осциллятор с затуханием} \ref{subsection:oscillator}
 
 На данный момент нас не интересуют её физические свойства, только математическая формулировка. Система описывается следующим образом:
 \begin{equation} \label{eq:oscillator:diffeq}
@@ -142,12 +142,12 @@ $$
 
 \begin{figure}
     \centering
-    \includegraphics{../images/oscillator/Damped Harmonic Oscillator.png}
+    \includegraphics{../Differential Equation Solution/images/oscillator/Damped Harmonic Oscillator.png}
     \caption{Сравнение численного решения с предсказаниями PINN после 10000 итераций обучения. Гиперпараметры были выбраны следующие: $N_\mathcal{D} = 256$, $\alpha = 1$, $\beta = 0.5$, $\mathrm{lr} = 0.001$. Видно, что к концу отрезка точность начинает падать.}
     \label{fig:oscillator:solution}
 \end{figure}
 
-\subsection{Система Лотки-Вольтерры}
+\subsection{Система Лотки-Вольтерры} \ref{subsection:lotkavolterra}
 
 Теперь рассмотрим модель взаимодействия двух биологических видов, один из которых выполняет роль хищника, другой - жертвы. Такая система часто моделируется с помощью стандартной системы Лотки-Вольтерры. Пусть число особей в их популяциях описывается, соответственно, $y(t)$ и $x(t)$, которые являются непрерывными функциями. Тогда динамика числа особей может быть выражена с помощью системы ОДУ первого порядка
 \begin{equation} \label{eq:lotkavolterra:diffeq}
@@ -182,7 +182,7 @@ $$
 
 \begin{figure}
     \centering
-    \includegraphics{../images/lotkavolterra/first approach/Lotka-Volterra System.png}
+    \includegraphics{../Differential Equation Solution/images/lotkavolterra/first approach/Lotka-Volterra System.png}
     \caption{Сравнение численного решения системы с полученным нейросетевым решением. Гиперпараметры были выбраны следующие: $w_1 = 1$, $w_2 = w_3 = 2$, $N_\mathcal{D} = 1024$ и $\mathrm{lr} = 0.01$.}
     \label{fig:lotkavolterra:first:solution}
 \end{figure}
@@ -193,7 +193,7 @@ $$
 
 \begin{figure}
     \centering
-    \includegraphics{../images/lotkavolterra/first approach/Losses.png}
+    \includegraphics{../Differential Equation Solution/images/lotkavolterra/first approach/Losses.png}
     \caption{Изменение значения функций ошибок в процессе обучения. Видно, что примерно на 12000 итерации происходит изменение фазы обучения. Появление этого перехода зависит от инициализации нейросетевых моделей, случайных направлений обучения оптимизатора и, может быть, каких-то других факторов.}
     \label{fig:lotkavolterra:first:losses}
 \end{figure}
@@ -208,7 +208,7 @@ $$
 
 \begin{figure}
     \centering
-    \includegraphics{../images/lotkavolterra/second approach/Lotka-Volterra System (second approach).png}
+    \includegraphics{../Differential Equation Solution/images/lotkavolterra/second approach/Lotka-Volterra System (second approach).png}
     \caption{Результат, полученный с использованием второго подхода. Гиперпараметры выбраны следующие: $N_\mathcal{D} = 1024$, $w_1 = 1$, $w_2 = w_3 = 2$, $\mathrm{lr} = 0.001$.}
     \label{fig:lotkavolterra:second:solution}
 \end{figure}
@@ -219,7 +219,7 @@ $$
 
 \begin{figure}[h]
     \centering
-    \includegraphics{../images/lotkavolterra/second approach/Losses.png}
+    \includegraphics{../Differential Equation Solution/images/lotkavolterra/second approach/Losses.png}
     \caption{Динамика функций ошибок во втором подходе.}
     \label{fig:lotkavolterra:second:losses}
 \end{figure}
@@ -246,7 +246,7 @@ $$
 
 % Тогда для решения этой задачи можно воспользоваться методами Рунге-Кутты. Пусть дан векторы коэффициентов $\mathbf{c}$, $\mathbf{b}$, $\mathbf{b}^*$ и матрица $\mathbf{A}$, которые определяют специфический метод из этого семейства.
 
-\subsection{Уравнение диффузии}
+\subsection{Уравнение диффузии} \ref{subsection:diffusion}
 
 Эта модель используется как самостоятельное описание процесса диффузии или как особый случай некоторых других моделей. Мы рассмотрим одномерный случай и задачу с граничными условиями.
 
@@ -277,7 +277,7 @@ $$
 
 \begin{figure}
     \centering
-    \includegraphics{../images/diffusion/Numerical solution.png}
+    \includegraphics{../Differential Equation Solution/images/diffusion/Numerical solution.png}
     \caption{Численное решение краевой задачи \ref{eq:diffusion:problemStatement}. Мы взяли 1000 шагов по времени и 250 шагов по пространству (т.о. $\Delta t = 0.0005$ и $\Delta x = 0.004$). Детали реализации см. в приложении \ref{section:appendix:pinn}.}
     \label{fig:diffusion:numerical}
 \end{figure}
@@ -297,7 +297,7 @@ $$
 
 \begin{figure}[h]
     \centering
-    \includegraphics{../images/diffusion/Error.png}
+    \includegraphics{../Differential Equation Solution/images/diffusion/Error.png}
     \caption{Абсолютная величина разницы между численным решением и предсказаниями модели. Неравномерность ошибок связана в первую очередь с тем, как были распределены случайно выбранные точки коллокации.}
     \label{fig:diffusion:error}
 \end{figure}
@@ -306,7 +306,7 @@ $$
 
 \begin{figure}
     \centering
-    \includegraphics{../images/diffusion/Loss report.png}
+    \includegraphics{../Differential Equation Solution/images/diffusion/Loss report.png}
     \caption{Динамика функций ошибок для решения уравнения диффузии.}
     \label{fig:diffusion:losses}
 \end{figure}
@@ -335,13 +335,15 @@ $$
 
 Ради упрощения мы предположим, что на каждой итерации процесса оптимизации используются одни и те же граничные точки и соответствующие им значения искомой функции, т.е., используется фиксированный заранее полный тренировочный датасет. Кроме того, мы рассмотрим лишь решение модели Лотки-Вольтерры (второй подход) и уравнение диффузии.
 
+Для анализа гиперпараметров мы выберем четыре различные постановки задачи, обнаружим для него удовлетворительное решение и будем отталкиваться от полученного набора гиперпараметров и итогового RMSE. Детали описаны в приложении \ref{section:appendix:hyperparameters}.
+
 \subsection{Анализ случайных факторов}
 
-Прежде чем рассматривать влияние тех или иных факторов на сеттинг PINN, мы должны рассмотреть случайные факторы, которые могут значительно усложнить дальнейший анализ, если не принимать их во внимание. Основным источником случайности является инициализация модели, однако, кроме этого, мы можем столкнуться с накоплением какого-либо другого вида ошибки в процессе обучения. Мы проверим, насколько значима вариация, вызванная источниками, не связанными с инициализацией модели.
+Прежде чем рассматривать влияние тех или иных факторов на сеттинг PINN, мы должны рассмотреть случайные факторы, которые могут значительно усложнить дальнейший анализ, если не принимать их во внимание. Основным источником случайности является инициализация модели и выбор случайных точек коллокации. Мы проверим, насколько значима вариация, вызванная этими источниками.
 
-\paragraph{Анализ случайной инициализации.} Мы взяли ряд методов инициализации и обучили по 15 нейросетевых моделей той же архитектуры и с теми же гиперпараметрами, которые описаны в предыдущих разделах. По итогу обучения мы разделили решения на две группы - хорошие и плохие. Для системы Лотки-Вольтерры решение принималось так: если за 25000 итераций средний RMSE (для двух функций) оказался меньше 0.1, мы записываем результат в хорошую группу. Для уравнения диффузии были выбраны 7500 итераций и RMSE 0.01. Кроме того, для уравнения диффузии точки на границе выбирались каждый раз одинаково с помощью torch.linspace, чтобы снизить влияние ненужной случайности.
+\paragraph{Анализ случайной инициализации.}
 
-\paragraph{Анализ случайностей при фиксированной инициализации.}
+\paragraph{Анализ случайного выбора точек коллокации.}
 
 \subsection{Влияние гиперпараметров на качество обучения}
 
