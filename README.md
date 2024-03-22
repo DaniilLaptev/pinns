@@ -13,27 +13,31 @@ In this study we are focusing not only on how to solve particular differential e
 
 Differential equations we are dealing with are listed below:
 
-- Damped Harmonic Oscillator (DHO): simple 1D ODE system.
-- Lotka-Volterra System (LV): 2D dynamical system.
+- Damped Harmonic Oscillator (DHO): simple 1D ODE system of oscillating mass.
+- Lotka-Volterra System (LV): 2D dynamical system of two dependent quantities.
 - Lorenz System (LZ): famous 3D system with chaotic behavior.
-- Advection Equation (Adv): 1D first-order hyperbolic PDE.
-- Diffusion Equation (Diff): 1D second-order parabolic PDE.
-- Wave Equation (Wave): 1D second-order hyperbolic PDE.
-- Burgers Equation (Burg): 1D nonlinear PDE that exhibits shocks.
+- Advection Equation (Adv): 1D first-order hyperbolic PDE of quantity transport.
+- Diffusion Equation (Diff): 1D second-order parabolic PDE of quantity diffusion.
+- Wave Equation (Wave): 1D second-order hyperbolic PDE of wave travelling.
+- Burgers Equation (Burg): 1D nonlinear PDE of wave travelling that exhibits shocks.
+- Korteweg-de Vries Equation (KdV): 1D nonlinear third-order PDE of wave travelling with high nonlinearity and soliton solutions.
+- Schrodinger Equation (Schr): 1D second-order PDE of wave function evolution through time and complex numbers.
+- Newton System (Newt): 2D second-order system of 2N ODE, where N is a number of particles.
+- Ornstein-Uhlenbeck Process (OU): simple stochastic differential equation in 1D.
+- Primitive Equations (Prim): system of PDEs that describes evolution of the atmosphere.
+
 
 | Name of System | Ground Truth Obtained | PINN Constructed | Optimal HPs  Found |
 |---|:---:|:---:|:---:|
-| Oscillator | ✅ | ✅ | ✅ |
-| Lotka-Volterra | ✅ | ✅ | ✅ |
-| Lorenz | ❌ | ❌ | ❌ |
-| Advection | ❌ | ❌ | ❌ |
-| Diffusion | ✅ | ✅ | ✅ |
-| Wave | ❌ | ❌ | ❌ |
-| Burgers | ❌ | ❌ | ❌ |
-| Korteweg-de Vriez | ❌ | ❌ | ❌ |
-| Schrodinger | ❌ | ❌ | ❌ |
-| Newton | ❌ | ❌ | ❌ |
-| Ornstein-Uhlenbeck | ❌ | ❌ | ❌ |
-| Black-Scholes | ❌ | ❌ | ❌ |
-| Primitive | ❌ | ❌ | ❌ |
-|  |  |  |  |
+| Damped Harmonic Oscillator | ✅ | ✅ | ✅ |
+| Lotka-Volterra System | ✅ | ✅ | ✅ |
+| Lorenz System | ❌ | ❌ | ❌ |
+| Advection Equation | ❌ | ❌ | ❌ |
+| Diffusion Equation | ✅ | ✅ | ✅ |
+| Wave Equation | ❌ | ❌ | ❌ |
+| Burgers Equation | ❌ | ❌ | ❌ |
+| Korteweg-de Vriez Equation | ❌ | ❌ | ❌ |
+| Schrodinger Equation | ❌ | ❌ | ❌ |
+| Newton System | ❌ | ❌ | ❌ |
+| Ornstein-Uhlenbeck Process | ❌ | ❌ | ❌ |
+| Primitive Equations | ❌ | ❌ | ❌ |
