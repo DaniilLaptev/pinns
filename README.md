@@ -7,9 +7,11 @@ Because of increasing interest in deep learning methods for incorporating prior 
 
 But we are facing a huge and somewhat unsolved problem - how to choose hyperparameters when using PINNs? This is simultaneously a theoretical question - because it raises a second-order questions, such as "why these hyperparameters are optimal", "does there exist connection between differential equation & problem statement and optimal hyperparameters" etc., - and a practical question - because we are usually want to solve a problem in efficient way and dont want to search them manually (we can always rely on automatic HPO methods and frameworks, but we then lack theoretical understanding on why and how such search should be performed).
 
-In this study we are focusing not only on how to solve particular differential equations, but we are sistematically investigate the problem described above. To-do lists in the following section shows our finished work and our plans.
+There are plenty of basic conclusions like "more complex solution leads to bigger neural network" etc., but we are interested in something beyond that. So, our main questions is: a) how does hyperparameters depend on problem statement? and b) how should we choose hyperparameters? For clarity, we are working with basic PINN method, without much clever enhancements or tricky tricks with data and loss function. 
 
-## Finished and Future Work
+In this study we are focusing not only on how to solve particular differential equations, but we are sistematically investigate the problem described above. To-dos in the following section shows our finished work and our plans.
+
+## Our Work
 
 Differential equations we are dealing with are listed below:
 
@@ -26,18 +28,26 @@ Differential equations we are dealing with are listed below:
 - Ornstein-Uhlenbeck Process (OU): simple stochastic differential equation in 1D.
 - Primitive Equations (Prim): system of PDEs that describes evolution of the atmosphere.
 
+Here are the tasks that we choose for our analysis:
 
-| Name of System | Ground Truth Obtained | PINN Constructed | Optimal HPs  Found |
-|---|:---:|:---:|:---:|
-| Damped Harmonic Oscillator | ✅ | ✅ | ✅ |
-| Lotka-Volterra System | ✅ | ✅ | ✅ |
-| Lorenz System | ❌ | ❌ | ❌ |
-| Advection Equation | ❌ | ❌ | ❌ |
-| Diffusion Equation | ✅ | ✅ | ✅ |
-| Wave Equation | ❌ | ❌ | ❌ |
-| Burgers Equation | ❌ | ❌ | ❌ |
-| Korteweg-de Vriez Equation | ❌ | ❌ | ❌ |
-| Schrodinger Equation | ❌ | ❌ | ❌ |
-| Newton System | ❌ | ❌ | ❌ |
-| Ornstein-Uhlenbeck Process | ❌ | ❌ | ❌ |
-| Primitive Equations | ❌ | ❌ | ❌ |
+1. Build a numerical method to obtain ground truth on demand.
+2. Build PINN, solve one particular problem using it to check if it works good.
+3. Choose 3-4 different problem statements with different and perhaps interesting behavior.
+4. Solve them and obtain optimal hyperparameters.
+5. Analyze, what makes difference between optimal hyperparameters, and how they are connected with problem statement and solution.
+6. Get one interesting problem statement. Investigate, how does hyperparameters and training process changing with slight changes in problem statement (for example, perturb coefficients, final time T, boundary conditions; this analysis should provide information about smooth dependence of hyperparameters on problem statement).
+7. Analysize different activation functions. Does there exist one good activation function that we should use, or they depend on particular problem?
+8. Analyze different rules of initialization. There are good and bad ones; what exactly makes optimization process stable and fast? What good initialization means - does it have connections with a properties of solution?
+
+We update this table according to our progress:
+
+| Task | DHO | LV | LZ | Adv | Diff | Wave | Burg | KdV | Schr | Newt | OU | Prim |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| #1 | ✅ | ✅ | ❌ | ❌ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| #2 | ✅ | ✅ | ❌ | ❌ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| #3 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| #4 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| #5 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| #6 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| #7 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| #8 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
