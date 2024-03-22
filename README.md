@@ -37,9 +37,9 @@ Here are the tasks that we choose for our analysis:
 5. Analyze, what makes difference between optimal hyperparameters, and how they are connected with problem statement and solution.
 6. Get one interesting problem statement. Investigate, how does hyperparameters and training process changing with slight changes in problem statement (for example, perturb coefficients, final time T, boundary conditions; this analysis should provide information about smooth dependence of hyperparameters on problem statement).
 7. Analysize different activation functions. Does there exist one good activation function that we should use, or they depend on particular problem?
-8. Analyze different rules of initialization. There are good and bad ones; what exactly makes optimization process stable and fast? What good initialization means - does it have connections with a properties of solution?
+8. Analyze different rules of initialization. There are good and bad ones; what exactly makes optimization process stable and fast? What good initialization means - does it have connections with a properties of solution? Why bad initial state leads to approximation of zero function?
 
-We update this table according to our progress:
+We will update this table according to our progress:
 
 | Task | DHO | LV | LZ | Adv | Diff | Wave | Burg | KdV | Schr | Newt | OU | Prim |
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
@@ -51,3 +51,18 @@ We update this table according to our progress:
 | #6 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | #7 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | #8 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+
+Hypotheses to check:
+
+1. If neural network size increases, then required amount of collocation points does so.
+   - This happens because of vanishing gradient problem.
+   - Number of layers L affects this more than network width W.
+   - The cause of this phenomena lies in something else.
+2. If final time T increases, then required neural network size does so.
+   - This happens because of increasing complexity of solution.
+   - This happens because of increasing sparsity in collocation points (for example, 1000 points placed in equal distance on [0, 10] are much more densely located than 1000 points on [0, 100]) and maybe some consequences.
+   - The cause of this phenomena lies in something else.
+3. As a consequence of 1, not big enough batch of collocation points leads to approximation of zero function. 
+   - This happens because optimizer does not able to choose good direction of minimization and falls down to bad minima.
+   - This phenomena corresponds to bad initialization in the following sense: not big enough batch leads to small "mistakes" in the direction of optimization, and eventually sticking in bad region of loss landscape, while bad initialization causes optimizer to make a huge "mistake". This "mistakes", however, happens in earlier stages of optimization, and both leads to approximation of zero function. 
+4. Phases of learning corresponds to learning of initial conditions and regularization rule (differential equation) at different times.
