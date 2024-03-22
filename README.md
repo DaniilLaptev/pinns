@@ -15,18 +15,18 @@ In this study we are focusing not only on how to solve particular differential e
 
 Differential equations we are dealing with are listed below:
 
-- Damped Harmonic Oscillator (DHO): simple 1D ODE system of oscillating mass.
-- Lotka-Volterra System (LV): 2D dynamical system of two dependent quantities.
-- Lorenz System (LZ): famous 3D system with chaotic behavior.
-- Advection Equation (Adv): 1D first-order hyperbolic PDE of quantity transport.
-- Diffusion Equation (Diff): 1D second-order parabolic PDE of quantity diffusion.
-- Wave Equation (Wave): 1D second-order hyperbolic PDE of wave travelling.
-- Ornstein-Uhlenbeck Process (OU): simple stochastic differential equation in 1D.
-- Burgers Equation (Burg): 1D nonlinear PDE of wave travelling that exhibits shocks.
-- Korteweg-de Vries Equation (KdV): 1D nonlinear third-order PDE of wave travelling with high nonlinearity and soliton solutions.
-- Schrodinger Equation (Schr): 1D second-order PDE of wave function evolution through time and complex numbers.
-- Newton System (Newt): 2D second-order system of 2N ODE, where N is a number of particles.
-- Primitive Equations (Prim): system of PDEs that describes evolution of the atmosphere.
+- Damped Harmonic Oscillator: simple 1D ODE system of oscillating mass.
+- Lotka-Volterra System: 2D dynamical system of two dependent quantities.
+- Lorenz System: famous 3D system with chaotic behavior.
+- Advection Equation: 1D first-order hyperbolic PDE of quantity transport.
+- Diffusion Equation: 1D second-order parabolic PDE of quantity diffusion.
+- Wave Equation: 1D second-order hyperbolic PDE of wave travelling.
+- Ornstein-Uhlenbeck Process: simple stochastic differential equation in 1D.
+- Burgers Equation: 1D nonlinear PDE of wave travelling that exhibits shocks.
+- Korteweg-de Vries Equation: 1D nonlinear third-order PDE of wave travelling with high nonlinearity and soliton solutions.
+- Schrodinger Equation: 1D second-order PDE of wave function evolution through time and complex numbers.
+- Newton System: 2D second-order system of 2N ODE, where N is a number of particles.
+- Primitive Equations: system of PDEs that describes evolution of the atmosphere.
 
 Here are the tasks that we choose for our analysis:
 
@@ -42,7 +42,7 @@ Here are the tasks that we choose for our analysis:
 We will update this table according to our progress:
 
 | Name of System \ Task | #1 | #2 | #3 | #4 | #5 | #6 | #7 | #8 |
-|---|---|---|---|---|---|---|---|---|
+|:--|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 | Damped Harmonic Oscillator | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Lotka-Volterra System | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Lorenz System | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
