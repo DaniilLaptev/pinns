@@ -42,7 +42,7 @@ Here are the tasks that we choose for our analysis:
 We will update this table according to our progress:
 
 | Name of System \ Task | #1 | #2 | #3 | #4 | #5 | #6 | #7 | #8 |
-|---|---|---|---|---|---|---|---|---|
+|:--|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 | Damped Harmonic Oscillator | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Lotka-Volterra System | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Lorenz System | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
