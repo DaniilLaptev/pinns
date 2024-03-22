@@ -63,6 +63,12 @@ Hypotheses to check:
 3. As a consequence of 1, not big enough batch of collocation points leads to approximation of zero function.
    - This happens because optimizer does not able to choose good direction of minimization and falls down to bad minima.
    - This phenomena corresponds to bad initialization in the following sense: not big enough batch leads to small "mistakes" in the direction of optimization, and eventually sticking in bad region of loss landscape, while bad initialization causes optimizer to make a huge "mistake". This "mistakes", however, happens in earlier stages of optimization, and both leads to approximation of zero function.
-4. If a batch size becomes smaller, then learning rate should be smaller to.
+4. If a batch size becomes smaller, then learning rate should be smaller too.
    - This happens because of increasing noise in optimizer. Choosing smaller lr will prevent optimizer of falling to bad minima.
 5. Phases of learning corresponds to learning of initial conditions and regularization rule (differential equation) at different times.
+
+## Our Roles
+
+Daniil Laptev: tasks 1-3, 5-8.
+
+Daniil Faryshev: task 4.
