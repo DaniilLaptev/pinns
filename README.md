@@ -42,7 +42,7 @@ Here are the tasks that we choose for our analysis:
 We update this table according to our progress:
 
 | Task | DHO | LV | LZ | Adv | Diff | Wave | Burg | KdV | Schr | Newt | OU | Prim |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 | #1 | ✅ | ✅ | ❌ | ❌ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | #2 | ✅ | ✅ | ❌ | ❌ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | #3 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
