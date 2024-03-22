@@ -21,11 +21,11 @@ Differential equations we are dealing with are listed below:
 - Advection Equation (Adv): 1D first-order hyperbolic PDE of quantity transport.
 - Diffusion Equation (Diff): 1D second-order parabolic PDE of quantity diffusion.
 - Wave Equation (Wave): 1D second-order hyperbolic PDE of wave travelling.
+- Ornstein-Uhlenbeck Process (OU): simple stochastic differential equation in 1D.
 - Burgers Equation (Burg): 1D nonlinear PDE of wave travelling that exhibits shocks.
 - Korteweg-de Vries Equation (KdV): 1D nonlinear third-order PDE of wave travelling with high nonlinearity and soliton solutions.
 - Schrodinger Equation (Schr): 1D second-order PDE of wave function evolution through time and complex numbers.
 - Newton System (Newt): 2D second-order system of 2N ODE, where N is a number of particles.
-- Ornstein-Uhlenbeck Process (OU): simple stochastic differential equation in 1D.
 - Primitive Equations (Prim): system of PDEs that describes evolution of the atmosphere.
 
 Here are the tasks that we choose for our analysis:
@@ -41,16 +41,20 @@ Here are the tasks that we choose for our analysis:
 
 We will update this table according to our progress:
 
-| Task | DHO | LV | LZ | Adv | Diff | Wave | Burg | KdV | Schr | Newt | OU | Prim |
-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-| #1 | ✅ | ✅ | ❌ | ❌ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| #2 | ✅ | ✅ | ❌ | ❌ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| #3 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| #4 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| #5 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| #6 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| #7 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| #8 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Name of System \ Task | #1 | #2 | #3 | #4 | #5 | #6 | #7 | #8 |
+|---|---|---|---|---|---|---|---|---|
+| Damped Harmonic Oscillator | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Lotka-Volterra System | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Lorenz System | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Advection Equation | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Diffusion Equation | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Wave Equation | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Ornstein-Uhlenbeck Process | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Burgers Equation | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Korteweg-de Vries Equation | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Schrodinger Equation | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Newtons Equations System | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Primitive Equations | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 
 Hypotheses to check:
 
