@@ -39,7 +39,7 @@ Here are the tasks that we choose for our analysis:
 7. Analysize different activation functions. Does there exist one good activation function that we should use, or they depend on particular problem?
 8. Analyze different rules of initialization. There are good and bad ones; what exactly makes optimization process stable and fast? What good initialization means - does it have connections with a properties of solution?
 
-We update this table according to our progress:
+We will update this table according to our progress:
 
 | Task | DHO | LV | LZ | Adv | Diff | Wave | Burg | KdV | Schr | Newt | OU | Prim |
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
