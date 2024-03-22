@@ -15,8 +15,8 @@ Differential equations we are dealing with are listed below:
 
 | Name of System | Differential Equation | Problem Statement |
 |---|---|---|
-| Damped Harmonic Oscillator (DHO) |  $\frac{\mathrm{d}^2 x}{\mathrm{d} t^2} + 2\zeta \omega_0\frac {\mathrm {d} x}{\mathrm {d} t} + \omega _0^2x = 0$ | $\begin{matrix} x(0) = x_0\\ \frac{\mathrm{d}x}{\mathrm{d}t}(0) = v_0 \end{matrix}$ |
-| Lotka-Volterra System (LV) | $\begin{cases} \frac{\mathrm{d}x}{\mathrm{d}t} = \alpha x - \beta x y \\ \frac{\mathrm{d}y}{\mathrm{d}t} = \delta y x - \gamma y \end{cases}$ | $\begin{matrix} x(0) = x_0\\ y(0) = y_0 \end{matrix}$ |
+| Damped Harmonic Oscillator (DHO) |  $\frac{\mathrm{d}^2 x}{\mathrm{d} t^2} + 2\zeta \omega_0\frac {\mathrm {d} x}{\mathrm {d} t} + \omega _0^2x = 0$ | $\begin{matrix} x(0) = x_0 \\\ \frac{\mathrm{d}x}{\mathrm{d}t}(0) = v_0 \end{matrix}$ |
+| Lotka-Volterra System (LV) | $\begin{cases} \frac{\mathrm{d}x}{\mathrm{d}t} = \alpha x - \beta x y \\\ \frac{\mathrm{d}y}{\mathrm{d}t} = \delta y x - \gamma y \end{cases}$ | $\begin{matrix} x(0) = x_0\\ y(0) = y_0 \end{matrix}$ |
 | Diffusion Equation (Diffusion)  | $\frac{\partial u}{\partial t} = D \frac{\partial^2 u}{\partial x^2}$ | $\begin{matrix} u(x, 0) = f(x)\\ u(A, t) = g_1(t)\\ u(B, t) = g_2(t) \end{matrix}$ | 
 | Lorenz System (LZ) | $\begin{cases} \frac{\mathrm{d}x}{\mathrm{d}t} = \sigma (y - x) \\ \frac{\mathrm{d}y}{\mathrm{d}t} = x(p - z) - y \\ \frac{\mathrm{d}z}{\mathrm{d}t} = xy - \beta z \end{cases}$ | $\begin{matrix} x(0) = x_0 \\ y(0) = y_0 \\ z(0) = z_0 \end{matrix}$ | 
 | Wave Equation (Wave) | $\frac{\partial^2 u}{\partial t} = v \frac{\partial^2 u}{\partial x^2}$ | $\begin{matrix} u(x, 0) = f(x) \\ \frac{\partial u}{\partial t}(x, 0) = g(x) \end{matrix}$ | 
