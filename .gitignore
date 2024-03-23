@@ -1,5 +1,12 @@
+
+# Useless images from training
 Iteration*
+
+# Useless latex files
 Paper/*
+
+# Useless python files
 __pycache__
 
+# Important file
 !Paper/paper.pdf
