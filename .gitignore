@@ -1,5 +1,5 @@
 Iteration*
 Paper/*
+code/__pycache__
 
-!Paper/pinns.pdf
-!Paper/pinns.tex
+!Paper/paper.pdf

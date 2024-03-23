@@ -27,6 +27,7 @@ Differential equations we are dealing with are listed below:
 - Schrodinger Equation: 1D second-order PDE of wave function evolution through time and complex numbers.
 - Newton System: 2D second-order system of 2N ODE, where N is a number of particles.
 - Primitive Equations: system of PDEs that describes evolution of the atmosphere.
+- Einstein Field Equations: system of PDEs that describes geometry of space-time and evolution of Universe.
 
 Here are the tasks that we choose for our analysis:
 
@@ -38,6 +39,7 @@ Here are the tasks that we choose for our analysis:
 6. Get one interesting problem statement. Investigate, how does hyperparameters and training process changing with slight changes in problem statement (for example, perturb coefficients, final time T, boundary conditions; this analysis should provide information about smooth dependence of hyperparameters on problem statement).
 7. Analysize different activation functions. Does there exist one good activation function that we should use, or they depend on particular problem?
 8. Analyze different rules of initialization. There are good and bad ones; what exactly makes optimization process stable and fast? What good initialization means - does it have connections with a properties of solution? Why bad initial state leads to approximation of zero function?
+9. For some equations, analyze, what happens when we switch from one spatial dimension to two or three. Does conclusions, derived from tasks 5-8, remains valid? Any new phenomena occures?
 
 We will update this table according to our progress:
 
@@ -53,8 +55,9 @@ We will update this table according to our progress:
 | Burgers Equation | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Korteweg-de Vries Equation | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Schrodinger Equation | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| Newtons Equations System | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Newton System | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Primitive Equations | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Einstein Field Equations | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 
 Hypotheses to check:
 
