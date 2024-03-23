@@ -1,5 +1,5 @@
 Iteration*
 Paper/*
-code/__pycache__
+__pycache__
 
 !Paper/paper.pdf
