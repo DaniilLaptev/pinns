@@ -90,6 +90,55 @@ class LotkaVolterra:
         return solution.y
 
 
+class LorenzSystem:
+    def __init__(self, T, params, initial_conditions, test_points):
+        
+        self.T = T
+        self.s, self.p, self.b = params
+        self.init_vals = torch.tensor(initial_conditions)
+
+        self.t = torch.linspace(0, self.T, test_points)
+        self.solution = self._solve()
+    
+    def loss_initial(self, model):
+        zero = torch.tensor([0.], requires_grad=True)
+        x = model(zero)
+        return torch.mean(torch.square(x - self.init_vals))
+    
+    def loss_physical(self, model, t):
+        xyz = model(t)
+        x = xyz[:,[0]]
+        y = xyz[:,[1]]
+        z = xyz[:,[2]]
+
+        dX = grad(x, t, grad_outputs=torch.ones_like(x), create_graph=True)[0]
+        dY = grad(y, t, grad_outputs=torch.ones_like(y), create_graph=True)[0]
+        dZ = grad(z, t, grad_outputs=torch.ones_like(z), create_graph=True)[0]
+        
+        loss_dX = torch.mean(torch.square(dX - self.s * (y - x)))
+        loss_dY = torch.mean(torch.square(dY - x * (self.p - z) + y))
+        loss_dZ = torch.mean(torch.square(dZ - x * y + self.b * z))
+        
+        return loss_dX, loss_dY, loss_dZ
+    
+    def _solve(self):
+        def lorenz_system(t, u, s, p, b):
+            x, y, z = u
+            dx = s * (y - x)
+            dy = x * (p - z) - y
+            dz = x * y - b * z
+            return [dx, dy, dz]
+
+        solution = solve_ivp(lorenz_system, 
+                             (0, self.T),
+                             self.init_vals, 
+                             method='RK45',
+                             args=(self.s, self.p, self.b), 
+                             t_eval=self.t.numpy())
+        
+        return solution.y
+
+
 class Diffusion:
     def __init__(self, D, boundaries, resolution, b_values):
         self.D = D

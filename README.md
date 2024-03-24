@@ -47,7 +47,7 @@ We will update this table according to our progress:
 |:--|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 | Damped Harmonic Oscillator | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Lotka-Volterra System | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| Lorenz System | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Lorenz System | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Advection Equation | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Diffusion Equation | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Wave Equation | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
@@ -73,9 +73,41 @@ Hypotheses to check:
 4. If a batch size becomes smaller, then learning rate should be smaller too.
    - This happens because of increasing noise in optimizer. Choosing smaller lr will prevent optimizer of falling to bad minima.
 5. Phases of learning corresponds to learning of initial conditions and regularization rule (differential equation) at different times.
+6. Uniform initialization typically leads to approximation of straight line, while with another initialization rule bad behavior is often appears as approximation of zero.
+
+Problems to solve:
+
+1. There are exactly three modes of learning: approximation of zero, slow approximation of solution, and good approximation. Sometimes second mode behaves like bad approximation - RMSE growing up, but neural network really learns some properties of solution function. It is hard to distinguish when to stop learning because of bad approximation or when to continue. How to resolve this problem?
+   - This happens because uniform initialization gives zero derivative almost everywhere, so neural network just cant learn anything about dynamics of system.
 
 ## Our Roles
 
 Daniil Laptev: tasks 1-3, 5-8.
 
 Daniil Faryshev: task 4.
+
+## Code Structure
+
+Now we will describe the idea behind the structure of our repository and how files with code are structured.
+
+For each problem in the table above there are a class related to it in the problems.py file. They are all organized in the following way:
+- Attributes:
+  1. Final time T, boundaries A and B, as float-point variables.
+  2. Parameters of differential equation, such as diffusion coefficient etc. as float-point variables.
+  3. Boundary values as PyTorch tensors. For ODE they are just values at time t = 0, for PDE they are PyTorch tensors with one tensor for each boundary (initial values are also boundary values on t = 0).
+  4. Test points, equally spaced on the domain of equation, as PyTorch tensor.
+  5. Numerical solution of the problem as PyTorch tensor.
+- Methods:
+  1. Method for boundary loss calculation.
+  2. Method for regularization loss (PINN residue) calculation.
+  3. Method for obtaining numerical solution for given problem statement.
+
+And some other helpful elements.
+
+In the utils.py file, there are implementation of Feed Forward neural networks in PyTorch and some helpful plotting functions. Function ```plot_losses``` is used to plot loss functions and RMSE in two subplots of one figure. Each plotting function has parameter "save", default False, that can be used to save figure in the images folder with the name provided; there are also "show" parameter, default True, that can be used to disable appearance of the plot (for example, when we want to visualize training process and save gif afterwards, we will use show=False and save=True).
+
+Main .ipynb files for each problem we have yet analyzed contains:
+- Training function.
+- Plotting of the result.
+- Plotting of the losses and errors.
+- Experimentation with problem statements and searching for optimal hyperparameters.

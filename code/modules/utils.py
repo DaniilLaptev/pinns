@@ -11,12 +11,12 @@ def plot_ode(domain, solutions, predicted=None, size=(5, 5), title=None, save=Fa
        
     fig = plt.figure(figsize=size)
 
-    for solution, name in solutions:
-        plt.plot(domain, solution, label=name)
+    for solution, name, color in solutions:
+        plt.plot(domain, solution, label=name, color=color)
         
     if predicted is not None:
-        for prediction, name in predicted:
-            plt.plot(domain, prediction, label=name)
+        for prediction, name, color in predicted:
+            plt.plot(domain, prediction, label=name, color=color)
     
     plt.xlabel('t')
     plt.ylabel('Value')
@@ -72,6 +72,9 @@ def plot_losses(t, losses, errors, title=None, save=False, dpi=300):
     # plt.grid()
     ax[0].legend()
     ax[1].legend()
+    
+    ax[0].title.set_text('Loss Dynamics')
+    ax[1].title.set_text('RMSE Dynamics')
 
     plt.tight_layout()
 
