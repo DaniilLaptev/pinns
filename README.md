@@ -47,7 +47,7 @@ We will update this table according to our progress:
 |:--|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 | Damped Harmonic Oscillator | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Lotka-Volterra System | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| Lorenz System | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Lorenz System | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Advection Equation | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Diffusion Equation | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Wave Equation | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
