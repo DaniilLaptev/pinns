@@ -18,9 +18,10 @@ Differential equations we are dealing with are listed below:
 - Damped Harmonic Oscillator: simple 1D ODE system of oscillating mass.
 - Lotka-Volterra System: 2D dynamical system of two dependent quantities.
 - Lorenz System: famous 3D system with chaotic behavior.
-- Advection Equation: 1D first-order hyperbolic PDE of quantity transport.
 - Diffusion Equation: 1D second-order parabolic PDE of quantity diffusion.
 - Wave Equation: 1D second-order hyperbolic PDE of wave travelling.
+- Laplace Equation: 2D second-order parabolic PDE that describes stationary or equilibrium state of a system.
+- Gray-Scott Model: 2D system of PDE that describes reaction and diffusion process of two chemicals.
 - Ornstein-Uhlenbeck Process: simple stochastic differential equation in 1D.
 - Schrodinger Equation: 1D second-order PDE of wave function evolution through time and complex numbers.
 - Newton System: 2D second-order system of 2N ODE, where N is a number of particles.
@@ -46,8 +47,8 @@ We will update this table according to our progress:
 | Damped Harmonic Oscillator | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Lotka-Volterra System | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Lorenz System | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| Advection Equation | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Diffusion Equation | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Gray-Scott Model | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Wave Equation | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Ornstein-Uhlenbeck Process | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Schrodinger Equation | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
