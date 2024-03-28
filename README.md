@@ -32,22 +32,23 @@ Here are the tasks that we choose for our analysis:
 
 1. Build a numerical method to obtain ground truth on demand.
 2. Build PINN, solve one particular problem using it to check if it works good.
-3. Choose 3-4 different problem statements with different and perhaps interesting behavior.
-4. Choose optimal initialization rule for them. Solve problems and obtain optimal hyperparameters.
-5. Analyze, what makes difference between optimal hyperparameters, and how they may be connected with a problem statement and solution.
-6. Get two interesting problem statements and appropriate RMSE for each system. Investigate, how should we change hyperparameters to reach this RMSE if problem statement slightly changes (for example, perturb coefficients, final time T, boundary conditions; this analysis may provide information about smooth dependence of hyperparameters on problem statement). Look what happens with training process (why may we need more training iterations?).
-7. Analysize different activation functions. Does there exist one good activation function that we should use, or they depend on particular problem?
-8. Analyze different rules of initialization. There are good and bad ones; what exactly makes optimization process stable and fast? What good initialization means - does it have connections with a properties of solution? Why bad initial state leads to approximation of zero function?
-9.  For some equations, analyze, what happens when we switch from one spatial dimension to two or three. Does conclusions, derived from tasks 4-8, remains valid? Any new phenomena occures?
+3. Choose 3-4 different problem statements with different and perhaps interesting behavior. Solve them using PINN to obtain appropriate RMSE.
+4. Analyze initialization rules for them. Which rule is the most reliable for particular problem? How does it depend on differential equation? How does it depend on model size and activation function?
+5. Analyze different activation functions and model sizes. Find minimal amount of collocation points for different models and each problem.
+6. Use collected data to analyze hyperparameters.
+7. Get two interesting problem statements and appropriate RMSE for each system. Investigate, how should we change hyperparameters to reach this RMSE if problem statement slightly changes (for example, perturb coefficients, final time T, boundary conditions; this analysis may provide information about smooth dependence of hyperparameters on problem statement). Look what happens with training process (why may we need more training iterations?).
+8. Analysize different activation functions. Does there exist one good activation function that we should use, or they depend on particular problem?
+9. Analyze different rules of initialization. There are good and bad ones; what exactly makes optimization process stable and fast? What good initialization means - does it have connections with a properties of solution? Why bad initial state leads to approximation of zero function?
+10. For some equations, analyze, what happens when we switch from one spatial dimension to two or three. Does conclusions, derived from tasks 4-8, remains valid? Any new phenomena occures?
 
 We will update this table according to our progress:
 
 | Name of System \ Task | #1 | #2 | #3 | #4 | #5 | #6 | #7 | #8 | #9 |
 |:--|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-| Damped Harmonic Oscillator | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| Lotka-Volterra System | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| Lorenz System | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| Diffusion Equation | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Damped Harmonic Oscillator | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Lotka-Volterra System | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Lorenz System | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Diffusion Equation | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Gray-Scott Model | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Wave Equation | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Ornstein-Uhlenbeck Process | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
