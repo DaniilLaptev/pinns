@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib import gridspec
 
 import torch
 import torch.nn as nn
@@ -114,3 +115,62 @@ class FeedForwardNetwork(nn.Module):
                     init_rule(param.data, *args)
                 else:
                     init_rule(param.data)
+                    
+def get_corr(dataframe):
+
+    grouped = dataframe.groupby(['init'])
+    num_rows = len(grouped)
+
+    correlation = np.zeros((num_rows, len(dataframe.columns) - 2))
+    rmse_data = np.zeros((num_rows, 2))
+
+    print(f'Instances of group...')
+    for i, group in enumerate(grouped):
+        group_name, group_data = group
+        print(f'{group_name[0]} - {len(group_data)}')
+        
+        correlation[i] += group_data.drop(['init'], axis=1).corr()['rmse'][1:]
+
+        rmse_data[i,0] += group_data['rmse'].mean()
+        rmse_data[i,1] += group_data['rmse'].std()
+    
+    return correlation, rmse_data, dataframe.columns.drop(['init']).to_list()[1:], grouped.groups.keys()
+
+def plot_rmse_corr(correlation, rmse_data, xlabels, ylabels, k=1):
+    
+    fig = plt.figure(figsize=(8 / k, 2 / k))
+    gs = gridspec.GridSpec(1, 2, width_ratios=[8, 2])
+
+    p_corr = plt.subplot(gs[0])
+    p_rmse = plt.subplot(gs[1])
+
+    corr_matrix = p_corr.matshow(correlation, vmin=-1, vmax=1, interpolation='none', cmap='viridis')
+    p_corr.title.set_text('Correlation of RMSE with other HPs')
+    p_corr.tick_params(axis="x", bottom=True, top=False, labelbottom=True, labeltop=False)
+    p_corr.set_xticks(np.arange(len(xlabels)))
+    p_corr.set_xticklabels(xlabels)
+    p_corr.set_yticks(np.arange(len(ylabels)))
+    p_corr.set_yticklabels(ylabels)
+    p_corr.grid(False)
+    
+    plt.colorbar(corr_matrix, ax=p_corr, pad=0.02, aspect=7.5)
+
+    for (i, j), z in np.ndenumerate(correlation):
+        p_corr.text(j, i, '{:0.1f}'.format(z), ha='center', va='center', color='white')
+
+    rmse_matrix = p_rmse.imshow(np.stack([rmse_data[:,0], rmse_data[:,0]]).T, cmap='magma_r', vmin=0)
+    p_rmse.title.set_text('RMSE')
+    p_rmse.tick_params(axis="x", bottom=True, top=False, labelbottom=True, labeltop=False)
+    p_rmse.set_xticks(np.arange(2))
+    p_rmse.set_xticklabels(['Mean', 'Std'])
+    p_rmse.set(yticklabels=[])
+    p_rmse.set(ylabel=None)
+    p_rmse.grid(False)
+    
+    plt.colorbar(rmse_matrix, ax=p_rmse, pad=0.08, aspect=7.5)
+
+    for (i, j), z in np.ndenumerate(rmse_data):
+        p_rmse.text(j, i, '{:0.1f}'.format(z), ha='center', va='center', color='white')
+
+    plt.tight_layout()
+    plt.show()
