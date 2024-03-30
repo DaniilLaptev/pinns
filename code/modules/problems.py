@@ -22,15 +22,17 @@ from tqdm import tqdm
 class DampedHarmonicOscillator:
     def __init__(self, T, params, initial_conditions):
         
+        self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        
         self.T = T
         self.d, self.w0 = params
-        self.init_vals = torch.tensor(initial_conditions)
+        self.init_vals = torch.tensor(initial_conditions).to(self.device)
 
-        self.t = torch.linspace(0, self.T, 128)
+        self.t = torch.linspace(0, self.T, 128).to(self.device)
         self.solution = self._solve()
     
     def loss_initial(self, model):
-        zero = torch.tensor([0.], requires_grad=True)
+        zero = torch.tensor([0.], requires_grad=True).to(self.device)
         x = model(zero)
         v = grad(x, zero, grad_outputs=torch.ones_like(x), create_graph=True)[0]
         return torch.mean(torch.square(torch.hstack([x, v]) - self.init_vals))
@@ -51,24 +53,26 @@ class DampedHarmonicOscillator:
 
         solution = solve_ivp(harmonic_oscillator, 
                              (0, self.T), 
-                             self.init_vals, 
+                             self.init_vals.cpu().numpy(), 
                              args=(self.d, self.w0), 
-                             t_eval=self.t)
+                             t_eval=self.t.cpu().numpy())
         return solution.y[0]
 
 
 class LotkaVolterra:
     def __init__(self, T, params, initial_conditions):
         
+        self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        
         self.T = T
         self.alpha, self.beta, self.delta, self.gamma = params
-        self.init_vals = torch.tensor(initial_conditions)
+        self.init_vals = torch.tensor(initial_conditions).to(self.device)
 
-        self.t = torch.linspace(0, self.T, 128)
+        self.t = torch.linspace(0, self.T, 128).to(self.device)
         self.solution = self._solve()
     
     def loss_initial(self, model):
-        zero = torch.tensor([0.], requires_grad=True)
+        zero = torch.tensor([0.], requires_grad=True).to(self.device)
         x = model(zero)
         return torch.mean(torch.square(x - self.init_vals))
     
@@ -94,10 +98,10 @@ class LotkaVolterra:
 
         solution = solve_ivp(lotka_volterra, 
                              (0, self.T),
-                             self.init_vals, 
+                             self.init_vals.cpu().numpy(), 
                              method='RK45',
                              args=(self.alpha, self.beta, self.delta, self.gamma), 
-                             t_eval=self.t.numpy())
+                             t_eval=self.t.cpu().numpy())
         
         return solution.y
 

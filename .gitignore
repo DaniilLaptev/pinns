@@ -9,5 +9,8 @@ Paper/*
 # Useless python files
 __pycache__
 
+# Useless analysis files
+sql
+
 # Important file
 !Paper/paper.pdf
