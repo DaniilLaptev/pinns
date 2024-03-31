@@ -42,12 +42,14 @@ def plot_pde(x, t, u, size=(5, 5), title=None, save=False, show=True, dpi=300):
     ax.plot_surface(X, T, u, cmap='viridis')
     ax.set_xlabel('x')
     ax.set_ylabel('t')
+    ax.grid(False)
 
     ax = fig.add_subplot(1, 2, 2)
     ax.imshow(u, origin='lower', aspect='auto', cmap='viridis', 
               extent=[x.min(), x.max(), t.min(), t.max()])
     ax.set_xlabel('x')
     ax.set_ylabel('t')
+    ax.grid(False)
 
     plt.tight_layout()
     
@@ -156,7 +158,7 @@ def plot_rmse_corr(correlation, rmse_data, xlabels, ylabels, k=1):
     plt.colorbar(corr_matrix, ax=p_corr, pad=0.02, aspect=7.5)
 
     for (i, j), z in np.ndenumerate(correlation):
-        p_corr.text(j, i, '{:0.1f}'.format(z), ha='center', va='center', color='white')
+        p_corr.text(j, i, '{:0.3f}'.format(z), ha='center', va='center', color='white')
 
     rmse_matrix = p_rmse.imshow(np.stack([rmse_data[:,0], rmse_data[:,0]]).T, cmap='magma_r', vmin=0)
     p_rmse.title.set_text('RMSE')

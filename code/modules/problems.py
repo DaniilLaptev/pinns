@@ -166,7 +166,7 @@ class Diffusion:
         self.t = torch.linspace(0, self.T, self.Nt)
         self.x = torch.linspace(self.L, self.R, self.Nx)
         
-        self.left_values, self.right_values, self.init_values = None, None, None
+        self.left_values = self.right_values = self.init_values = None
     
     def loss_boundary(self, model, t_left, t_right, x_init):
         left =  model(torch.vstack([torch.ones_like(t_left)  * self.L, t_left]).T)
@@ -210,7 +210,11 @@ class Diffusion:
         A_reversed = np.linalg.inv(A)
 
         for n in range(0, Nt - 1):
-            b = np.dot(B, u[n, :])
+
+            b = B.dot(u[n, :])
+            b[0] = alpha * self.left_boundary[n]
+            b[-1] = alpha * self.right_boundary[n]
+
             u[n+1, :] = A_reversed @ b
 
         return u
