@@ -5,8 +5,8 @@ from matplotlib import gridspec
 import torch
 import torch.nn as nn
 
-def rmse(predicts, target):
-    return np.sqrt(np.square(predicts - target).mean())
+def l2(predicts, target):
+    return np.sqrt(np.square(predicts - target).sum())
 
 def plot_ode(domain, solutions, predicted=None, size=(5, 5), title=None, save=False, show=True, dpi=300):
        
@@ -77,7 +77,7 @@ def plot_losses(t, losses, errors, title=None, save=False, dpi=300):
     ax[1].legend()
     
     ax[0].title.set_text('Loss Dynamics')
-    ax[1].title.set_text('RMSE Dynamics')
+    ax[1].title.set_text('L2 Dynamics')
 
     plt.tight_layout()
 

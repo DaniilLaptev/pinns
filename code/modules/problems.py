@@ -109,15 +109,17 @@ class LotkaVolterra:
 class LorenzSystem:
     def __init__(self, T, params, initial_conditions, test_points):
         
+        self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        
         self.T = T
         self.s, self.p, self.b = params
-        self.init_vals = torch.tensor(initial_conditions)
+        self.init_vals = torch.tensor(initial_conditions).to(self.device)
 
-        self.t = torch.linspace(0, self.T, test_points)
+        self.t = torch.linspace(0, self.T, test_points).to(self.device)
         self.solution = self._solve()
     
     def loss_initial(self, model):
-        zero = torch.tensor([0.], requires_grad=True)
+        zero = torch.tensor([0.], requires_grad=True).to(self.device)
         x = model(zero)
         return torch.mean(torch.square(x - self.init_vals))
     
@@ -147,10 +149,10 @@ class LorenzSystem:
 
         solution = solve_ivp(lorenz_system, 
                              (0, self.T),
-                             self.init_vals, 
+                             self.init_vals.cpu().numpy(), 
                              method='RK45',
                              args=(self.s, self.p, self.b), 
-                             t_eval=self.t.numpy())
+                             t_eval=self.t.cpu().numpy())
         
         return solution.y
 
