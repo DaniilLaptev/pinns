@@ -87,20 +87,24 @@ def plot_losses(t, losses, errors, title=None, save=False, dpi=300):
     plt.show()
 
 class FeedForwardNetwork(nn.Module):
-    def __init__(self, hidden_layers, hidden_dim, input_dim=1, output_dim=1):
+    def __init__(self, hidden_layers, hidden_dim, input_dim=1, output_dim=1, activation=nn.Tanh()):
         super(FeedForwardNetwork, self).__init__()
         
         self.L = hidden_layers
         self.W = hidden_dim
         
         self.model = nn.Sequential()
-        self.activation = nn.Tanh()
+        
+        self.activation = activation
         
         inp_linear = nn.Linear(input_dim, hidden_dim)
         out_linear = nn.Linear(hidden_dim, output_dim)
         
+        layernorm = nn.LayerNorm(hidden_dim)
+        
         self.model.add_module('input', inp_linear)
         self.model.add_module('activ0', self.activation)
+        self.model.add_module('layernorm', layernorm)
         for i in range(hidden_layers - 1):
             linear = nn.Linear(hidden_dim, hidden_dim)
             self.model.add_module(f'linear{i+1}', linear)
@@ -108,6 +112,7 @@ class FeedForwardNetwork(nn.Module):
         self.model.add_module('output', out_linear)
         
     def forward(self, x):
+        # x = self.batchnorm(x)
         return self.model(x)
     
     def init_weights(self, init_rule, args=None):
