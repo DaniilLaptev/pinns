@@ -1,6 +1,4 @@
 # PINNs-Training
-
-<!-- # PINNs-Training
 Project where we study PINN methodology for solving various differential equations.
 
 ---
@@ -130,4 +128,4 @@ Main .ipynb files for each problem we have yet analyzed contains:
 - Training function.
 - Plotting of the result.
 - Plotting of the losses and errors.
-- Experimentation with problem statements and searching for optimal hyperparameters. -->
+- Experimentation with problem statements and searching for optimal hyperparameters.
