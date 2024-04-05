@@ -3,6 +3,7 @@ import numpy as np
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import matplotlib.animation as animation
 import scienceplots
 plt.style.use(['science'])
 mpl.rcParams["font.size"] = "12"
@@ -223,11 +224,13 @@ class Diffusion:
     
 
 class GrayScott:
-    def __init__(self, T, params, initial_values):
+    def __init__(self, T, params, initial_values, dt=1.0):
         self.T = T
         self.f, self.k, self.ra, self.rb = params
         self.A_init, self.B_init = initial_values
         self.Nx, self.Ny = self.A_init.shape
+        
+        self.dt = dt
         
         self.solution = self._solve()
     
@@ -257,10 +260,11 @@ class GrayScott:
         
         print('Solving...')
         for i in tqdm(range(0, self.T - 1)):
-            A[i+1] = A[i] + (self.ra * nabla(A[i]) - A[i]*B[i]*B[i] + self.f*(1 - A[i]))
-            B[i+1] = B[i] + (self.rb * nabla(B[i]) + A[i]*B[i]*B[i] - (self.f + self.k)*B[i])
+            A[i+1] = A[i] + (self.ra * nabla(A[i]) - A[i]*B[i]*B[i] + self.f*(1 - A[i])) * self.dt
+            B[i+1] = B[i] + (self.rb * nabla(B[i]) + A[i]*B[i]*B[i] - (self.f + self.k)*B[i]) * self.dt
 
-        return A[:: self.T // 100], B[:: self.T // 100]
+        # return A[:: self.T // 100], B[:: self.T // 100]
+        return A, B
     
     def _save_frame(self, i):
         fig = plt.figure(figsize=(5, 5))
@@ -279,19 +283,29 @@ class GrayScott:
 
         return f'./.temp/{idx}.png'
     
-    def save_animation(self, path, size=(5, 3)):
+    def save_animation(self, path, size=(5, 3), step=1, interval=1, fps=60):
         
         fig = plt.figure(figsize=size)
+        frame = plt.imshow(
+            self.solution[1][0],
+            origin='lower', aspect='auto', cmap='Blues', 
+            extent=[0, self.Nx, 0, self.Ny],
+            interpolation='gaussian'
+            )
         
-        with Pool(4) as p:
-            frames = p.map(
-                self._save_frame,
-                range(len(self.solution[1]))
-                )
-            
-        plt.close()
+        def animate(i):
+            matrix = self.solution[1][i]
+            frame.set_data(matrix)
+            frame.set_clim(vmin=0, vmax=matrix.max())
+            plt.xlabel('x')
+            plt.ylabel('t')
+            idx = i * self.T // len(self.solution[1])
+            plt.title(f'Step {idx}')
+            return frame,
         
-        imgs = []
-        for filename in frames:
-            imgs.append(imageio.imread(filename))
-            imageio.mimsave(path, imgs, fps=60, loop=0)
+        myAnimation = animation.FuncAnimation(
+            fig, animate, frames=np.arange(0, self.T, step), \
+            interval=interval, blit=True, repeat=True
+            )
+
+        myAnimation.save(path, writer=animation.FFMpegFileWriter(fps=fps))
