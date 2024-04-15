@@ -11,6 +11,7 @@ __pycache__
 
 # Useless analysis files
 sql
+logging
 
 # Important file
 !Paper/paper.pdf
