@@ -9,10 +9,11 @@ from torch.autograd import grad
 
 from scipy.signal import convolve2d
 
-from tqdm import tqdm
+from modules.problems.problem import Problem
 
-class GrayScott:
+class GrayScott(Problem):
     def __init__(self, T, params, initial_values, dt=1.0):
+        super(GrayScott, self).__init__()
         self.T = T
         self.f, self.k, self.ra, self.rb = params
         self.A_init, self.B_init = initial_values

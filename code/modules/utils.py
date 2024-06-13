@@ -4,6 +4,7 @@ from matplotlib import gridspec
 
 import torch
 import torch.nn as nn
+from scipy.fft import fftfreq
 
 import imageio
 from PIL import Image
@@ -22,9 +23,38 @@ def l2(predicts, target):
 def rmse(predicts, target):
     return np.sqrt(np.square(predicts - target).mean())
 
-def create_gif(images, path, duration=5, fps=60, loop=0):
-    imgs = [Image.open(filename) for filename in images]
-    imgs[0].save(path, save_all=True, append_images=imgs[1:], duration=duration, fps=fps, loop=loop)
+def create_animation(images, path, duration=5, fps=60, loop=0, type='mp4'):
+    
+    if type == 'mp4':
+        writer = imageio.get_writer(path, fps=fps)
+
+        for im in images:
+            writer.append_data(imageio.imread(im))
+        writer.close()
+        
+    if type == 'gif':
+        imgs = [Image.open(filename) for filename in images]
+        imgs[0].save(path, save_all=True, append_images=imgs[1:], duration=duration, fps=fps, loop=loop)
+    
+def plot_frequencies(domain, sol, fsol, names=None, size=(5, 5)):
+    N = domain.shape[0]
+    if names is None:
+        names = [None for f in sol]
+    
+    fig, axs = plt.subplots(2, 1, figsize=size)
+    
+    for f, name in zip(sol, names):
+        axs[0].plot(domain, f, label=name)
+    axs[0].legend()
+    
+    dt = np.diff(domain)[0]
+    for ff, name in zip(fsol, names):
+        freqs = fftfreq(len(ff), dt)
+        axs[1].plot(freqs[:N//2], np.abs(ff)[:N//2], label=name)
+    axs[1].set_xscale('log')
+    axs[1].legend()
+    
+    plt.show()
 
 class FeedForwardNetwork(nn.Module):
     def __init__(

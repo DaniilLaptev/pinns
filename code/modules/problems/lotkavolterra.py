@@ -2,14 +2,20 @@
 import torch
 from torch.autograd import grad
 
+import numpy as np 
+
 from scipy.integrate import solve_ivp
+from scipy.fft import fft, fftfreq
 
 import matplotlib.pyplot as plt
 
 from modules.utils import l2
 
-class LotkaVolterra:
+from modules.problems.problem import Problem
+
+class LotkaVolterra(Problem):
     def __init__(self, T, params, initial_conditions):
+        super(LotkaVolterra, self).__init__()
         
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
         
@@ -88,6 +94,39 @@ class LotkaVolterra:
         
         else:
             plt.show()
+            
+    def plot_frequencies(self, predictions, size=(5, 5), show=False):
+        
+        xsol, ysol = self.solution
+        fxsol, fysol = fft(xsol - xsol.mean()), fft(ysol - ysol.mean())
+        
+        xpred, ypred = predictions.T
+        fxpred, fypred = fft(xpred - xpred.mean()), fft(ypred - ypred.mean())
+        
+        N = self.domain.numpy().shape[0]
+            
+        fig, axs = plt.subplots(2, 1, figsize=size)
+        
+        axs[0].plot(self.domain.numpy(), xsol, label='x(t)')
+        axs[0].plot(self.domain.numpy(), ysol, label='x(t)')
+        axs[0].plot(self.domain.numpy(), xpred, label='X(t)', linestyle='dashed')
+        axs[0].plot(self.domain.numpy(), ypred, label='Y(t)', linestyle='dashed')
+        axs[0].legend()
+        
+        dt = self.domain.numpy()[1]
+        
+        freqs = fftfreq(len(fxsol), dt)
+        axs[1].plot(freqs[:N//2], np.abs(fxsol)[:N//2], label='x(t)')
+        axs[1].plot(freqs[:N//2], np.abs(fysol)[:N//2], label='y(t)')
+        axs[1].plot(freqs[:N//2], np.abs(fxpred)[:N//2], label='X(t)', linestyle='dashed')
+        axs[1].plot(freqs[:N//2], np.abs(fypred)[:N//2], label='Y(t)', linestyle='dashed')
+        
+        axs[1].set_xscale('log')
+        axs[1].legend()
+        
+        if show:
+            plt.show()
+        return fig
     
     @staticmethod
     def get_problem(N):

@@ -15,8 +15,11 @@ from scipy.integrate import solve_ivp
 
 from modules.utils import l2
 
-class LorenzSystem:
+from modules.problems.problem import Problem
+
+class LorenzSystem(Problem):
     def __init__(self, T, params, initial_conditions):
+        super(LorenzSystem, self).__init__()
         
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
         

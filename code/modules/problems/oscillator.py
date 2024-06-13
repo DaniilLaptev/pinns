@@ -2,7 +2,9 @@
 import torch
 from torch.autograd import grad
 
+import numpy as np
 from scipy.integrate import solve_ivp
+from scipy.fft import fft, fftfreq
 
 import matplotlib.pyplot as plt
 
@@ -56,14 +58,44 @@ class DampedHarmonicOscillator(Problem):
                              t_eval=self.domain.cpu().numpy())
         return solution.y[0]
     
-    def plot(self, predictions, name, title=None, size=(5, 3), show=False):
-        fig = plt.figure(figsize=size)
+    def plot(self, predictions, fig, title=None, size=(5, 3), show=False):
         
         if predictions is not None:
-            plt.plot(self.domain, predictions.flatten().cpu(), label='Model', linestyle='dashed')
+            plt.plot(self.domain, predictions.flatten(), label='Model', linestyle='dashed')
         plt.plot(self.domain, self.solution, label='Numerical')
         
         plt.legend()
+        
+        if show:
+            plt.show()
+        return fig
+    
+    def plot_frequencies(self, predictions, size=(5, 5), show=False):
+        
+        sol = self.solution
+        fsol = fft(sol - sol.mean())
+        
+        pred = predictions.flatten()
+        fpred = fft(pred - pred.mean())
+        names = ['Solution', 'Model']
+        
+        N = self.domain.numpy().shape[0]
+            
+        fig, axs = plt.subplots(2, 1, figsize=size)
+        
+        axs[0].plot(self.domain.numpy(), sol, label='Solution')
+        axs[0].plot(self.domain.numpy(), pred, label='Model', linestyle='dashed')
+        axs[0].legend()
+        
+        dt = self.domain.numpy()[1]
+        
+        freqs = fftfreq(len(fsol), dt)
+        axs[1].plot(freqs[:N//2], np.abs(fsol)[:N//2], label='Solution')
+        freqs = fftfreq(len(fpred), dt)
+        axs[1].plot(freqs[:N//2], np.abs(fpred)[:N//2], label='Model', linestyle='dashed')
+        
+        axs[1].set_xscale('log')
+        axs[1].legend()
         
         if show:
             plt.show()

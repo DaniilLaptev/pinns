@@ -5,6 +5,8 @@ from collections import defaultdict
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 
+from IPython.display import display, clear_output
+
 class Problem:
     def __init__(self):
         pass
@@ -28,7 +30,8 @@ class Problem:
         logging_params = None,
         plotting_params = None,
         name = None,
-        show_progress = True
+        show_progress = True,
+        show_plot = True
     ) -> dict:
         """
         Function for training PINN model to solve specific differential equation.
@@ -85,19 +88,25 @@ class Problem:
             plot_every = plotting_params['plot_every']
             save_dir = plotting_params['save_dir']
             size = plotting_params['size']
+            plot_solution = plotting_params['plot_solution']
+            plot_freq = plotting_params['plot_freq']
         
-        params = model.get_params()
+        if ls > -1:
+            params = model.get_params()
         
         loss_history = []
         
         if show_progress:
             pbar = tqdm(range(num_iters))
+            predictions = self.test(model)
+            error = self.error(predictions)
             
         for i in range(num_iters):
             current_log = defaultdict(None)
             
             error_calculated = False
             if le > -1 and i % le == 0:
+                model.eval()
                 predictions = self.test(model)
                 error = self.error(predictions)
                 error_calculated = True
@@ -108,17 +117,31 @@ class Problem:
                 
             if plot_every > -1 and i % plot_every == 0:
                 if not error_calculated:
-                    predictions = self.test(model)
+                    model.eval()
+                    predictions = self.test(model).numpy()
                 
-                fig = plt.figure(figsize=size)
-                fig = self.plot(predictions, fig, show=False)
-                plt.title(f'Iteration {i}')
+                if plot_solution:
+                    model.eval()
+                    fig = plt.figure(figsize=size)
+                    
+                    fig = self.plot(predictions, fig, show=False)
+                    plt.title(f'Iteration {i}')
+                
+                    fig.set_size_inches(size)
+                    if save_dir[-1] == '/': save_dir = save_dir[:-1]
+                    plt.savefig(f'{save_dir}/{name}_iteration_{i}.png', dpi=250)
+                    plt.close()
+                
+                if plot_freq:
+                    model.eval()
+                    fig = self.plot_frequencies(predictions)
+                
+                    fig.set_size_inches(size)
+                    if save_dir[-1] == '/': save_dir = save_dir[:-1]
+                    plt.savefig(f'{save_dir}/{name}_iteration_{i}.png', dpi=250)
+                    plt.close()
             
-                fig.set_size_inches(size)
-                if save_dir[-1] == '/': save_dir = save_dir[:-1]
-                plt.savefig(f'{save_dir}/{name}_iteration_{i}.png', dpi=250)
-                plt.close()
-            
+            model.train()
             optimizer.zero_grad()
             
             L_B = self.boundary_loss(model, boundary_points, lbcoefs)
@@ -142,15 +165,16 @@ class Problem:
                 current_log['step'] = float((curr_params - params).norm(p=2).item())
             
             logging[i] = current_log
-            
+                
             if show_progress:
-                pbar.set_description(f'Iter {" "*(5 - len(str(i))) + str(i)} \t {error}')
+                pbar.set_description(f'Iter {" "*(5 - len(str(i))) + str(i)} \t Loss: {L.item():.5f} --- Error: {error:.5f}')
                 pbar.update(1)
 
             lr_scheduler.step()
         
         current_log = defaultdict(None)
         
+        model.eval()
         predictions = self.test(model)
         error = self.error(predictions)
         current_log['error'] = error
