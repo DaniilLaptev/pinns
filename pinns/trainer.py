@@ -15,9 +15,9 @@ class Trainer:
         constraints_sampler,
         collocation_sampler,
         loss_coefs,
+        logger = None,
         coef_adjuster = None,
         test_points_sampler = None,
-        logger = None
         ):
         
         self.model = model
@@ -104,16 +104,18 @@ class Trainer:
         if error_metric is None:
             error_metric = l2_error
         
+        # todo: measure not only best error, but best loss (in case we dont have solution)
         if validate_every is not None:
             if self.test_points_sampler is None:
                 raise ValueError('Test points sampler must be provided for validation.')
             error = self.evaluate(error_metric)
             self.error_history.append(error)
-            
-        if checkpoint_strategy == 'best':
-            best_result = self.error_history[-1]
-        else:
-            raise NotImplementedError('This saving method is not implemented yet.')
+        
+        if checkpoint_every is not None:
+            if checkpoint_strategy == 'best':
+                best_result = self.error_history[-1]
+            else:
+                raise NotImplementedError('This saving method is not implemented yet.')
             
         if show_progress:
             pbar = tqdm(range(num_iters))
