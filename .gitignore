@@ -16,5 +16,8 @@ logging
 # Useless files with code
 code
 
+# Models
+examples/*.pt
+
 # Important file
 !Paper/paper.pdf
