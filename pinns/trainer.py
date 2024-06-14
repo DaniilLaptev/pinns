@@ -1,6 +1,5 @@
 import torch
 
-from pinns.optimizers import Adam
 from pinns.errors import l2_error
 
 from tqdm.notebook import tqdm_notebook as tqdm
@@ -39,8 +38,8 @@ class Trainer:
         
         self.coef_adjuster = coef_adjuster
         
-    def evaluate(self, error_metric):
-        self.test_points['pts'], self.test_points['vals'] = self.test_points_sampler()
+    def evaluate(self, error_metric, **sampler_args):
+        self.test_points['pts'], self.test_points['vals'] = self.test_points_sampler(**sampler_args)
         self.test_points['pred'] = self.model.predict(self.test_points['pts'])
         error = error_metric(self.test_points['pred'], self.test_points['vals'])
         return error
@@ -50,9 +49,8 @@ class Trainer:
         def closure():
             self.optimizer.clear_cache()
             
-            self.constraints['pred'], self.collocation['pred'] = self.model.predict(
-                [self.constraints['pts'], self.collocation['pts']]
-            )
+            self.constraints['pred'] = self.model.predict(self.constraints['pts'])
+            self.collocation['pred'] = self.model.predict(self.collocation['pts'])
             
             losses = self.loss_fn(
                 self.constraints['pts'],
@@ -139,8 +137,9 @@ class Trainer:
                 
             self.loss_history.append(loss.item())
             
-            pbar.set_description(f'Loss: {loss:.5f}')
-            pbar.update(1)
+            if show_progress:
+                pbar.set_description(f'Loss: {loss:.5f}')
+                pbar.update(1)
             self.iter += 1
             
             if self.coef_adjuster is not None:

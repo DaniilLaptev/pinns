@@ -6,10 +6,11 @@ class PINN:
         
     def predict(self, x):
         if isinstance(x, list):
-            preds = [self.model(pts) for pts in x]
-        if isinstance(x, torch.Tensor):
-            preds = self.model(x)
-        return preds
+            return [self.model(pts) for pts in x]
+        if isinstance(x, dict):
+            pts = torch.hstack(list(x.values()))
+            return self.model(pts)
+        return self.model(x)
     
     def count_parameters(self):
         total = 0
