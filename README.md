@@ -1,4 +1,4 @@
-# PINNs-Training
+# pinns
 Project where we study PINN methodology for solving various differential equations.
 
 ---
