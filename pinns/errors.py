@@ -1,9 +1,9 @@
-import torch
+
 import numpy as np
 
 from torch import Tensor
 
-def l2_error(predicts, target):
+def l2(predicts, target):
     
     if isinstance(predicts, Tensor):
         predicts = predicts.detach().cpu().numpy()
@@ -15,7 +15,7 @@ def l2_error(predicts, target):
         
     return np.sqrt(np.square(predicts - target).sum())
 
-def rel_l2_error(predicts, target):
+def rel_l2(predicts, target):
     
     if isinstance(predicts, Tensor):
         predicts = predicts.detach().cpu().numpy()
@@ -27,7 +27,7 @@ def rel_l2_error(predicts, target):
     
     return np.linalg.norm(predicts - target, 2) / np.linalg.norm(target, 2)
 
-def rmse_error(predicts, target):
+def rmse(predicts, target):
     
     if isinstance(predicts, Tensor):
         predicts = predicts.detach().cpu().numpy()
