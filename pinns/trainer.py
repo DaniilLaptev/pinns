@@ -109,11 +109,8 @@ class Trainer:
             error = self.evaluate(error_metric)
             self.error_history.append(error)
         
-        if checkpoint_every is not None:
-            if checkpoint_strategy == 'best':
-                best_result = self.error_history[-1]
-            else:
-                raise NotImplementedError('This saving method is not implemented yet.')
+        if checkpoint_strategy == 'best':
+            best_result = self.error_history[-1]
             
         if show_progress:
             pbar = tqdm(range(num_iters))

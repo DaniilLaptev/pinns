@@ -17,7 +17,7 @@ logging
 code
 
 # Models
-examples/*.pt
+*.pt
 
 # Important file
 !Paper/paper.pdf
