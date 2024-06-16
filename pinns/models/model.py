@@ -3,9 +3,12 @@ import torch
 class PINN:
     def __init__(self, pytorch_module):
         self.model = pytorch_module
-        
+    
+    def __call__(self, x):
+        return self.predict(x)
+    
     def predict(self, x):
-        if isinstance(x, list):
+        if isinstance(x, (list, tuple)):
             return [self.model(pts) for pts in x]
         if isinstance(x, dict):
             pts = torch.hstack(list(x.values()))

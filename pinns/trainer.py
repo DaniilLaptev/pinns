@@ -1,6 +1,6 @@
 import torch
 
-from pinns.errors import l2_error
+from pinns.errors import l2
 
 from tqdm.notebook import tqdm_notebook as tqdm
 
@@ -100,14 +100,18 @@ class Trainer:
         self.optimizer = optims[current_optim]
         
         if error_metric is None:
-            error_metric = l2_error
+            error_metric = l2
         
         # todo: measure not only best error, but best loss (in case we dont have solution)
         if validate_every is not None:
             if self.test_points_sampler is None:
                 raise ValueError('Test points sampler must be provided for validation.')
-            error = self.evaluate(error_metric)
+            
+            # self.model.eval()
+            with torch.no_grad():
+                error = self.evaluate(error_metric)
             self.error_history.append(error)
+            # self.model.train()
         
         if checkpoint_strategy == 'best':
             best_result = self.error_history[-1]
