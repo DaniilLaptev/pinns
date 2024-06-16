@@ -83,10 +83,7 @@ class Trainer:
         optimizers,
         show_progress = True,
         validate_every = None,
-        error_metric = None,
-        checkpoint_strategy = None,
-        checkpoint_name = None,
-        checkpoint_every = None,
+        error_metric = None
         ):
         
         iters = []
@@ -112,9 +109,6 @@ class Trainer:
                 error = self.evaluate(error_metric)
             self.error_history.append(error)
             # self.model.train()
-        
-        if checkpoint_strategy == 'best':
-            best_result = self.error_history[-1]
             
         if show_progress:
             pbar = tqdm(range(num_iters))
@@ -156,10 +150,3 @@ class Trainer:
             if validate_every is not None and (i + 1) % validate_every == 0:
                 error = self.evaluate(error_metric)
                 self.error_history.append(error)
-                
-            if checkpoint_strategy == 'best' and error < best_result:
-                torch.save(self.model.model, checkpoint_name + '.pt')
-                best_result = loss.item()
-            
-            elif checkpoint_strategy == 'every' and i % checkpoint_every == 0:
-                torch.save(self.model.model, checkpoint_name + f'_{i}.pt')
