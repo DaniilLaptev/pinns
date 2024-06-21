@@ -1,7 +1,7 @@
 
 import torch
 
-import pinns
+from pinns.models import PINN
 from .optimizer import Optimizer
 
 class Adam(Optimizer):
@@ -9,7 +9,7 @@ class Adam(Optimizer):
         
         if isinstance(model, torch.nn.Module):
             parameters = model.parameters()
-        elif isinstance(model, pinns.models.model.PINN):
+        elif isinstance(model, PINN):
             parameters = model.model.parameters()
             
         self.optim = torch.optim.Adam(parameters, **hyperparameters)

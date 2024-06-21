@@ -1,8 +1,6 @@
 
 import torch
 
-import pinns
-
 class Optimizer:
     
     def __init__(self, model = None, scheduler = None, **hyperparameters):

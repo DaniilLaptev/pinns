@@ -32,7 +32,7 @@ class DataSampler:
             else:
                 idx = np.random.choice(dataset.shape[0], N)
                 
-            loaded = torch.tensor(dataset[idx])
+            loaded = torch.tensor(dataset[idx], dtype=torch.float32)
             
             loaded_pts = loaded[:, :self.num_coords]
             loaded_data = loaded[:, self.num_coords:]

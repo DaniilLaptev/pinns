@@ -25,7 +25,7 @@ def rel_l2(predicts, target):
     if predicts.shape != target.shape:
         raise RuntimeError('Shapes of predicts and targets are different.')
     
-    return np.linalg.norm(predicts - target, 2) / np.linalg.norm(target, 2)
+    return np.linalg.norm(predicts - target) / np.linalg.norm(target)
 
 def mse(predicts, target):
     

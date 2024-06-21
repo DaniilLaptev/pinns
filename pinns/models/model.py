@@ -15,6 +15,11 @@ class PINN:
             return self.model(pts)
         return self.model(x)
     
+    def transform_input(self, x):
+        return x
+    def transform_output(self, x):
+        return x
+    
     def count_parameters(self):
         total = 0
         for name, p in self.model.named_parameters():

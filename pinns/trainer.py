@@ -15,12 +15,14 @@ class Trainer:
         collocation_sampler,
         loss_coefs,
         logger = None,
+        clip_grad = None,
         coef_adjuster = None,
         test_points_sampler = None,
         ):
         
         self.model = model
         self.optimizer = None
+        self.clip_grad = clip_grad
             
         self.constraints_sampler = constraints_sampler
         self.collocation_sampler = collocation_sampler
@@ -40,7 +42,7 @@ class Trainer:
         
     def evaluate(self, error_metric, **sampler_args):
         self.test_points['pts'], self.test_points['vals'] = self.test_points_sampler(**sampler_args)
-        self.test_points['pred'] = self.model.predict(self.test_points['pts'])
+        self.test_points['pred'] = self.model(self.test_points['pts'])
         error = error_metric(self.test_points['pred'], self.test_points['vals'])
         return error
         
@@ -49,8 +51,8 @@ class Trainer:
         def closure():
             self.optimizer.clear_cache()
             
-            self.constraints['pred'] = self.model.predict(self.constraints['pts'])
-            self.collocation['pred'] = self.model.predict(self.collocation['pts'])
+            self.constraints['pred'] = self.model(self.constraints['pts'])
+            self.collocation['pred'] = self.model(self.collocation['pts'])
             
             losses = self.loss_fn(
                 self.constraints['pts'],
@@ -65,6 +67,10 @@ class Trainer:
                 total_loss += loss * w
             
             total_loss.backward(retain_graph=True)
+            
+            if self.clip_grad is not None:
+                torch.nn.utils.clip_grad_norm_(self.model.model.parameters(), 
+                                               max_norm=self.clip_grad)
             
             return total_loss
         
@@ -83,7 +89,10 @@ class Trainer:
         optimizers,
         show_progress = True,
         validate_every = None,
-        error_metric = None
+        error_metric = None,
+        at_training_start_callbacks = [],
+        at_epoch_end_callbacks = [],
+        at_training_end_callbacks = []
         ):
         
         iters = []
@@ -99,7 +108,6 @@ class Trainer:
         if error_metric is None:
             error_metric = l2
         
-        # todo: measure not only best error, but best loss (in case we dont have solution)
         if validate_every is not None:
             if self.test_points_sampler is None:
                 raise ValueError('Test points sampler must be provided for validation.')
@@ -112,6 +120,9 @@ class Trainer:
             
         if show_progress:
             pbar = tqdm(range(num_iters))
+            
+        for callback in at_training_start_callbacks:
+            callback()
             
         for i in range(num_iters):
             
@@ -132,11 +143,6 @@ class Trainer:
                 
             self.loss_history.append(loss.item())
             
-            if show_progress:
-                pbar.set_description(f'Loss: {loss:.5f}')
-                pbar.update(1)
-            self.iter += 1
-            
             if self.coef_adjuster is not None:
                 self.loss_coefs = self.coef_adjuster(self.iter, self.loss_coefs)
                 
@@ -150,3 +156,17 @@ class Trainer:
             if validate_every is not None and (i + 1) % validate_every == 0:
                 error = self.evaluate(error_metric)
                 self.error_history.append(error)
+                
+            if show_progress:
+                desc = f'Loss: {loss:.5f}'
+                if validate_every is not None:
+                    desc += f', error: {error:.5f}'
+                pbar.set_description(desc)
+                pbar.update(1)
+            self.iter += 1
+            
+            for callback in at_epoch_end_callbacks:
+                callback()
+                
+        for callback in at_training_end_callbacks:
+                callback()

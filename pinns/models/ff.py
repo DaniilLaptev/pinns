@@ -4,7 +4,7 @@ import torch.nn as nn
 from .model import PINN
 
 class FF(PINN):
-    def __init__(self, layers, activ=nn.ReLU(), biases=True):
+    def __init__(self, layers, activ=nn.ReLU(), biases=True, scale = 1):
         
         modules = [nn.Linear(layers[0], layers[1])]
             
