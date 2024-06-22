@@ -38,4 +38,5 @@ Project where I study PINN methodology for solving various differential equation
 - Compare different optimizers.
 - Compare different models.
 - Compare different learning methods.
+- Check if information propagation present in all of PINN tasks. Moreover, check if it present in different optimizers and GP-PINNs.
 - What if we use transformer encoder architecture, will its attention mechanism be able to capture the relationships between input variables? For models with context, they are may be a room for experimenting with scalability of data and pre-trained PINNs. For example, if we want to encode some more variables along with default ones. Moreover, they may be a possibility of that if we somehow can encode differential equation and pass it into the model (maybe create something like token library, but for differential operators, or just pass them as text).
