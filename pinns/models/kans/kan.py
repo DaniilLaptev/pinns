@@ -20,8 +20,8 @@ LIBRARY = {
 }
 
 class KAN(PINN):
-    def __init__(self, layers, type = 'bsplines', scale = 1, **parameters):
-        
+    def __init__(self, layers, type = 'bsplines', scale = 1, input_names = None, output_names = None, **parameters):
+        super(KAN, self).__init__(input_names = input_names, output_names = output_names)
         if type == 'chebyshev':
             self.model = LIBRARY[type](layers, scale, **parameters)
         else:

@@ -2,30 +2,25 @@
 import torch
 
 from .sampler import Sampler
+from ..fancytensor import FancyTensor
 
-from collections import defaultdict
-
-class RandomSampler(Sampler):
-    def __init__(self, domain, num_pts, mode = 'continuous', return_dict = True):
-        self.domain = domain
+class RandomRectangularSampler(Sampler):
+    def __init__(self, domain, num_pts, requires_grad = True, names = None):
+        
+        
         self.num_pts = num_pts
-        self.mode = mode
-        self.return_dict = return_dict
+        
+        self.names = names
+        if isinstance(domain, dict) and names is None:
+            self.names = list(domain.keys())
+            self.domain = torch.tensor(list(domain.values())).T
+            
+        elif isinstance(domain, (list, tuple)):
+            self.domain = torch.tensor(domain).T
     
     def __call__(self):
         
-        pts = defaultdict()
-        for k, v in self.domain.items():
-            
-            if self.mode == 'continuous':
-                pts[k] = torch.rand((self.num_pts, 1)) * (v[1] - v[0]) + v[0]
-                pts[k].requires_grad = True
+        a, b = self.domain[0], self.domain[1]
+        pts = torch.rand(self.num_pts, len(self.domain)) * (b - a) + a
         
-            else:
-                # todo: if mode is 'array', we will randomly choose domain's subset.
-                raise NotImplementedError(f'Mode {self.mode} is not implemented yet.')
-        
-        if not self.return_dict:
-            return torch.hstack(list(pts.values()))
-        
-        return pts
+        return FancyTensor(pts, names = self.names)

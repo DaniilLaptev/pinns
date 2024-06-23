@@ -12,11 +12,11 @@ Project where I study PINN methodology for solving various differential equation
 - Add some more opimizers from different sources (PyTorch, pymoo, scipy.optimize etc.) and test them.
 - Add dynamic methods: change loss coefficients during training, samplers, optimizer etc.
 - Add many different activation functions that are not in PyTorch. Add adaptive activation functions.
-- Add adaptive samplers. Maybe it is more appropriate to make one sampler with some parameters (for example, sample from beta distribution) and use dynamic methods or callbacks to change parameters of that sampler during training.
-- Add different PINNs that are already discussed in literature: xPINNs, cPINNs, fPINNs, GP-PINNs, GPT-PINNs, Bayesian, GANs, PhyLSTM, PhyGeoNet, CNNs. Maybe implement MAMBA-like model and more exotic models. 
-- If loss decreases, it is not clear if PINN actually approximates solution. How can we be sure that training is not broken and loss does not fool us?
+- Add adaptive samplers. Maybe it is more appropriate to make a sampler with some parameters (for example, sample from beta distribution) and use dynamic methods or callbacks to change parameters of that sampler during training.
+- Add different PINNs that are already discussed in literature: xPINNs, cPINNs, fPINNs, GP-PINNs, GPT-PINNs, Bayesian, GANs, PhyLSTM, PhyGeoNet, CNNs. Maybe implement MAMBA-like model and more exotic models, if feasible.
+- If loss decreases, it is not clear if PINN actually approximates solution. How can we be sure that training is not broken and loss does not fool us? Maybe we should calculate difference between model predictions and stop if they are not changing, but loss does, and add this strategy into early stopping.
 - Add pinns.inverse module for inverse problems.
-- Add pinns.Tuner module for automatic tuning of various hyperparameters, meta-learning, pareto frontier derivation and more.
+- Add pinns.Tuner module for automatic tuning of various hyperparameters, meta-learning, pareto frontier derivation, hyperparameters importance analysis and more.
 - Add an example of how to define hard constraints. Restructure model prediction logic so user will edit only predict(x) method.
 - Make autograd derivative much more faster. Maybe use torch.func. Benchmark different methods (maybe for large number of input and output variables jacobian will be faster than batched grad).
 
@@ -27,6 +27,7 @@ Project where I study PINN methodology for solving various differential equation
 - Add method to obtain learning frontier.
 - Add many-dimensional finite differences derivative computation.
 - Add fractional derivative computation.
+- Make available training on multiple devices.
 - Add pinns.interpret module, which will provide methods for deriving analytical formula, examining of learned representations, weights analysis etc.
 - Add pinns.analyze module. There will be different methods for analyzing training process of PINNs: NTK, spectral bias, information propagation, loss landscape analysis, learning frontier monitoring etc.
 - Add an example of sequential learning: at some iterations, we use learned model to predict target function values (at some points b), and add predictions into the constraints data. This operation must use information about learning frontier.
