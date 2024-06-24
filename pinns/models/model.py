@@ -1,26 +1,16 @@
 import torch
-from ..fancytensor import FancyTensor
 
 class PINN:
-    def __init__(self, model = None, input_names = None, output_names = None):
+    def __init__(self, model = None,):
         self.model = model
-        self.input_names = input_names
-        self.output_names = output_names
     
     def __call__(self, x):
         if isinstance(x, torch.Tensor):
             predictions = self.predict(x)
-        elif isinstance(x, FancyTensor):
-            predictions = self.predict(x.data)
         elif isinstance(x, (list, tuple)):
             predictions = [self.predict(y) for y in x]
-        
-        if self.output_names is not None:
-            if isinstance(predictions, list):
-                return [FancyTensor(pred, names = self.output_names) 
-                        for pred in predictions]
-            else:
-                return FancyTensor(predictions, names = self.output_names)
+        elif isinstance(x, dict):
+            predictions = self.predict(torch.hstack(list(x.values())))
             
         return predictions
     
@@ -31,7 +21,7 @@ class PINN:
         if isinstance(self.model, torch.nn.Module):    
             total = sum(p.numel() for p in self.model.parameters())
             trainable = sum(p.numel() for p in self.model.parameters() if p.requires_grad)
-            return total, trainable
+            return {'total': total, 'trainable': trainable}
         else:
             raise NotImplementedError('Parameters counter is not implemented for this model.')
     

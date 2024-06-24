@@ -5,5 +5,4 @@ __all__ = [
 ]
 
 from .trainer import Trainer
-# from .tuner import Tuner 
-from .fancytensor import FancyTensor
+# from .tuner import Tuner

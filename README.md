@@ -22,6 +22,7 @@ Project where I study PINN methodology for solving various differential equation
 
 ### Not so important features:
 
+- Add fancytensor that will let user access variables not by slicing, but also by their name.
 - Add commentaries and documentation.
 - Define more different activation functions.
 - Add method to obtain learning frontier.

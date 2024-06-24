@@ -13,8 +13,9 @@ __pycache__
 sql
 logging
 
-# Useless files with code
+# Testing, prototyping, legacy
 code
+prototyping
 
 # Models
 *.pt
