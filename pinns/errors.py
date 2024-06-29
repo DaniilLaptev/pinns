@@ -13,7 +13,7 @@ def l2(predicts, target):
     if predicts.shape != target.shape:
         raise RuntimeError('Shapes of predicts and targets are different.')
         
-    return np.sqrt(np.square(predicts - target).sum())
+    return np.sqrt(np.square(predicts - target).sum(axis=0)).mean()
 
 def rel_l2(predicts, target):
     
@@ -25,7 +25,10 @@ def rel_l2(predicts, target):
     if predicts.shape != target.shape:
         raise RuntimeError('Shapes of predicts and targets are different.')
     
-    return np.linalg.norm(predicts - target) / np.linalg.norm(target)
+    distance = np.sqrt(np.square(predicts - target).sum(axis=0))
+    norm = np.sqrt(np.square(predicts - target).sum(axis=0))
+    
+    return (distance / norm).mean()
 
 def mse(predicts, target):
     
@@ -37,7 +40,7 @@ def mse(predicts, target):
     if predicts.shape != target.shape:
         raise RuntimeError('Shapes of predicts and targets are different.')
     
-    return np.square(predicts - target).mean()
+    return np.square(predicts - target).mean(axis=0).mean()
 
 def rmse(predicts, target):
     
@@ -45,5 +48,8 @@ def rmse(predicts, target):
         predicts = predicts.detach().cpu().numpy()
     if isinstance(target, Tensor):
         target = target.detach().cpu().numpy()
+    
+    if predicts.shape != target.shape:
+        raise RuntimeError('Shapes of predicts and targets are different.')
         
-    return np.sqrt(np.square(predicts - target).mean())
+    return np.sqrt(np.square(predicts - target).mean(axis=0)).mean()

@@ -14,15 +14,12 @@ class Trainer:
         constraints_sampler,
         collocation_sampler,
         loss_coefs,
-        logger = None,
-        clip_grad = None,
         coef_adjuster = None,
         test_points_sampler = None,
         ):
         
         self.model = model
         self.optimizer = None
-        self.clip_grad = clip_grad
             
         self.constraints_sampler = constraints_sampler
         self.collocation_sampler = collocation_sampler
@@ -68,10 +65,6 @@ class Trainer:
             
             total_loss.backward(retain_graph=True)
             
-            if self.clip_grad is not None:
-                torch.nn.utils.clip_grad_norm_(self.model.model.parameters(), 
-                                               max_norm=self.clip_grad)
-            
             return total_loss
         
         if self.optimizer.mode == 'closure':
@@ -110,7 +103,7 @@ class Trainer:
         
         if validate_every is not None:
             if self.test_points_sampler is None:
-                raise ValueError('Test points sampler must be provided for validation.')
+                raise ValueError('Test sampler must be provided for validation.')
             
             # self.model.eval()
             with torch.no_grad():
