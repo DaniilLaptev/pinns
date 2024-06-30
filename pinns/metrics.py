@@ -26,7 +26,7 @@ def rel_l2(predicts, target):
         raise RuntimeError('Shapes of predicts and targets are different.')
     
     distance = np.sqrt(np.square(predicts - target).sum(axis=0))
-    norm = np.sqrt(np.square(predicts - target).sum(axis=0))
+    norm = np.sqrt(np.square(target).sum(axis=0))
     
     return (distance / norm).mean()
 
