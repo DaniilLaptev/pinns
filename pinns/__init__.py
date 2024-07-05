@@ -1,8 +1,9 @@
 
 __all__ = [
     'Trainer',
-    'FancyTensor'
+    'Domain'
 ]
 
 from .trainer import Trainer
+from .domain import Domain
 # from .tuner import Tuner

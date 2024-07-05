@@ -2,11 +2,11 @@
 __all__ = [
     'Sampler',
     'ConstantSampler',
-    'RandomRectangularSampler',
+    'RandomSampler',
     'DataSampler'
 ]
 
 from .sampler import Sampler
 from .constant import ConstantSampler
-from .random import RandomRectangularSampler
+from .random import RandomSampler
 from .data import DataSampler

@@ -5,6 +5,7 @@ from pinns.metrics import l2
 from tqdm.notebook import tqdm_notebook as tqdm
 
 from collections import defaultdict
+import matplotlib.pyplot as plt
 
 class Trainer:
     def __init__(
@@ -15,7 +16,6 @@ class Trainer:
         collocation_sampler,
         loss_coefs = None,
         coef_adjuster = None,
-        log_every_loss = False
         ):
         
         self.model = model
@@ -32,7 +32,6 @@ class Trainer:
         
         self.coef_adjuster = coef_adjuster
         
-        self.log_every_loss = log_every_loss
         self.loss_history = []
         self.error_history = []
         
@@ -44,12 +43,13 @@ class Trainer:
     def train_iter(self):
         
         def closure():
+            
             self.optimizer.clear_cache()
             
             self.cstr['pred'] = self.model(self.cstr['pts'])
             self.cllc['pred'] = self.model(self.cllc['pts'])
             
-            losses = self.lossfn(
+            current_losses = self.lossfn(
                 self.cstr['pts'],
                 self.cstr['pred'],
                 self.cstr['vals'],
@@ -58,7 +58,7 @@ class Trainer:
             )
             
             total_loss = 0
-            for loss, w in zip(losses, self.loss_coefs):
+            for loss, w in zip(current_losses, self.loss_coefs):
                 total_loss += loss * w
             
             total_loss.backward(retain_graph=True)
@@ -71,18 +71,8 @@ class Trainer:
         else:
             loss = closure()
             self.optimizer.step()
-        
-        if self.log_every_loss:
-            curr_losses = self.lossfn(
-                    self.cstr['pts'],
-                    self.cstr['pred'],
-                    self.cstr['vals'],
-                    self.cllc['pts'],
-                    self.cllc['pred']
-                )
-            self.loss_history.append([ls.item() for ls in curr_losses] + [loss.item()])
-        else:
-            self.loss_history.append(loss.item())
+
+        self.loss_history.append(loss.item())
             
         return loss
     
@@ -109,9 +99,6 @@ class Trainer:
         iters.append(num_iters + 1)
         self.optimizer = optims[0]
         
-        if metrics is None:
-            metrics = [l2]
-        
         if validate_every is not None:
             if test_sampler is None:
                 raise ValueError('Test sampler must be provided for validation.')
@@ -120,7 +107,7 @@ class Trainer:
             with torch.no_grad():
                 pts, vals = test_sampler()
                 metric_results = [self.evaluate(metric, pts, vals) for metric in metrics]
-            self.error_history.append(metric_results)
+            self.error_history.append(torch.tensor(metric_results).view(-1, 1))
             # self.model.train()
             
         if show_progress:
@@ -162,7 +149,7 @@ class Trainer:
                 with torch.no_grad():
                     pts, vals = test_sampler()
                     metric_results = [self.evaluate(metric, pts, vals) for metric in metrics]
-                self.error_history.append(metric_results)
+                self.error_history.append(torch.tensor(metric_results).view(-1, 1))
                 
             if show_progress:
                 desc = f'Loss: {loss:.5f}'
@@ -180,3 +167,62 @@ class Trainer:
                 
         for callback in training_end_callbacks:
                 callback()
+                
+    def plot(
+        self,
+        error_names = None,
+        figsize = (10, 4),
+        single = True,
+        stack = 'horizontal', 
+        width_ratios = [1, 1], 
+        height_ratios = [1, 1],
+        loss_log = True,
+        error_log = True,
+        ):
+        
+        loss_history = torch.tensor(self.loss_history)
+        
+        plot_error = len(self.error_history) > 0
+        
+        if plot_error:
+            error_history = torch.hstack(self.error_history)
+            if error_names is None:
+                error_names = [f'Metric {i}' for i in range(error_history.shape[0])]
+        else:
+            single = True    
+        
+        if single:
+            
+            fig = plt.figure(figsize=figsize)
+            plt.plot(loss_history, label = 'Loss')
+            
+            if plot_error:
+                for er, name in zip(error_history, error_names):
+                    plt.plot(er, label = name, linestyle = ':')
+            plt.legend()
+            plt.grid()
+            
+            if error_log or loss_log:
+                plt.yscale('log')
+            
+        else:
+            
+            if stack == 'horizontal':
+                fig, axs = plt.subplots(1, 2, figsize=figsize, width_ratios=width_ratios, sharex=True)
+            else:
+                fig, axs = plt.subplots(2, 1, figsize=figsize, height_ratios=height_ratios, sharex=True)
+            
+            axs[0].plot(loss_history, label = 'Loss')
+            axs[0].legend()
+            axs[0].grid()
+            if loss_log:
+                axs[0].set_yscale('log')
+            
+            for er, name in zip(error_history, error_names):
+                axs[1].plot(er, label = name)
+            axs[1].legend()
+            axs[1].grid()
+            if error_log:
+                axs[1].set_yscale('log')
+        
+        plt.show()
