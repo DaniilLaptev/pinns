@@ -16,6 +16,7 @@ class Trainer:
         collocation_sampler,
         loss_coefs = None,
         coef_adjuster = None,
+        analyzers = None,
         ):
         
         self.model = model
@@ -34,6 +35,8 @@ class Trainer:
         
         self.loss_history = []
         self.error_history = []
+        
+        self.analyzers = analyzers
         
     def evaluate(self, error_metric, pts, vals):
         pred = self.model(pts)
@@ -120,6 +123,10 @@ class Trainer:
         for callback in training_start_callbacks:
             callback()
             
+        if self.analyzers is not None:
+            for analyzer in self.analyzers:
+                analyzer.execute(self.model)
+            
         for i in range(num_iters):
             
             self.cllc['pts'] = self.cllc_sampler()
@@ -158,15 +165,25 @@ class Trainer:
                     printed_metrics = [metric_results[idx] for idx in idx_printed_metric]
                     for metric_result in printed_metrics:
                         desc += f'{metric_result:.5f}, '
-                pbar.set_description(desc[:-2])
+                    desc = desc[:-2]
+                pbar.set_description(desc)
                 pbar.update(1)
             self.iter += 1
             
             for callback in epoch_end_callbacks:
                 callback()
                 
+            if self.analyzers is not None:
+                for analyzer in self.analyzers:
+                    if i % analyzer.compute_every == 0:
+                        analyzer.execute(self.model)
+                
         for callback in training_end_callbacks:
                 callback()
+                
+        if self.analyzers is not None:
+            for analyzer in self.analyzers:
+                analyzer.finish()
                 
     def plot(
         self,
