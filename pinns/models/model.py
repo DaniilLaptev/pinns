@@ -51,14 +51,22 @@ class PINN:
         else:
             raise NotImplementedError('This method is not implemented for this model.')
     
-    def get_parameters_vector(self):
+    def parameters(self):
         if isinstance(self.model, torch.nn.Module):    
-            params = []
-            for param in self.model.parameters():
-                params.extend(param.flatten().detach())
-            return torch.tensor(params)
+            return self.model.parameters()
         else:
             raise NotImplementedError('This method is not implemented for this model.')
+    
+    def get_parameters_vector(self):
+        if isinstance(self.model, torch.nn.Module):    
+            params, shapes = [], []
+            for param in self.model.parameters():
+                params.extend(param.flatten().detach())
+                shapes.append(param.shape)
+            params = torch.tensor(params)
+        else:
+            raise NotImplementedError('This method is not implemented for this model.')
+        return params, shapes
         
     def __repr__(self):
         

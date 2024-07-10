@@ -187,6 +187,100 @@ class InformationPropagation:
             
         plt.tight_layout()
         plt.show()
+        
+    def pplot(
+        self, 
+        model, 
+        num_points = 100, 
+        R = 1, 
+        loss_vmax = None, 
+        descending = False, 
+        figsize = (10, 5), 
+        interpolation = None
+        ):
+        
+        p, _ = model.get_parameters_vector()
+        
+        rads = torch.linspace(0, R, num_points)
+        result = {'losses': [], 'errors': []}
+
+        for i in range(num_points):
+            points = torch.randn(p.size(0))
+            points /= torch.norm(points, p = 2)
+            random_parameters = p + rads[i] * points
+            
+            start = 0
+            for param in model.parameters():
+                step = param.shape[0] * param.shape[1] if len(param.shape) > 1 else param.shape[0]
+                end = start + step
+                param.data = random_parameters[start:end].reshape(param.shape)
+                start = end
+                
+            preds = model(self.pts)
+            ls = self.residual(preds, self.pts).abs().flatten()
+            result['losses'].append(ls.detach())
+            
+            if self.vals is not None:
+                er = (preds - self.vals).abs().mean(axis=1)
+                result['errors'].append(er.detach())
+        
+        if descending:
+            rads = rads[::-1]
+        result['losses'] = torch.vstack(result['losses']).T
+        if self.vals is not None:
+            result['errors'] = torch.vstack(result['errors']).T
+        
+        extent = [rads[0], rads[-1], 0, self.dists.max()]
+        kwargs = {
+            'aspect': 'auto',
+            'origin': 'lower',
+            'interpolation': interpolation,
+            'extent': extent
+            }
+        
+        def plot_loss(ax1, ax2):
+            im = ax1.imshow(result['losses'], vmax = loss_vmax, **kwargs)
+            plt.colorbar(im)
+            ax1.title.set_text('Loss')
+            ax1.set_ylabel('Distance')
+            ax2.plot(rads, result['losses'].mean(dim=0))
+            ax2.set_ylabel('Mean Loss')
+        
+        def plot_error(ax1, ax2):
+            im = ax1.imshow(result['errors'], **kwargs)
+            plt.colorbar(im)
+            ax1.title.set_text('Error')
+            ax1.set_ylabel('Distance')
+            ax2.plot(rads, result['errors'].mean(dim=0))
+            ax2.set_ylabel('Mean Error')
+        
+        if self.strategy == 'both':
+            fig, axs = plt.subplots(2, 2, figsize=figsize, width_ratios=[5, 2])
+            plot_loss(axs[0][0], axs[0][1])
+            plot_error(axs[1][0], axs[1][1])
+            axs[1][0].set_xlabel('Radius')
+            axs[1][1].set_xlabel('Radius')
+            for ax in [axs[0][1], axs[1][1]]:
+                ax.set_xlim(rads[0], rads[-1])
+                ax.set_yscale('log')
+                ax.yaxis.set_label_position("right")
+                ax.yaxis.tick_right()
+                
+        else:
+            fig, axs = plt.subplots(1, 2, figsize=figsize)
+            if self.strategy == 'loss':
+                plot_loss(axs[0], axs[1])
+            else:
+                plot_error(axs[0], axs[1])
+            axs[0].set_xlabel('Radius')
+            axs[1].set_xlabel('Radius')
+            axs[1].set_xlim(rads[0], rads[-1])
+            axs[1].set_yscale('log')
+            axs[1].yaxis.set_label_position("right")
+            axs[1].yaxis.tick_right()
+            
+        plt.tight_layout()
+        plt.show()
     
     def describe(self):
         pass
