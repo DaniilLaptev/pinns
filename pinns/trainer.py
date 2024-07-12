@@ -7,16 +7,19 @@ from tqdm.notebook import tqdm_notebook as tqdm
 from collections import defaultdict
 import matplotlib.pyplot as plt
 
+from pinns.models import PINN
+from pinns.samplers import Sampler
+
 class Trainer:
     def __init__(
         self, 
-        lossfn,
-        model,
-        constraints_sampler,
-        collocation_sampler,
-        loss_coefs = None,
+        lossfn : callable,
+        model : PINN,
+        constraints_sampler : Sampler,
+        collocation_sampler : Sampler,
+        loss_coefs : list = None,
         coef_adjuster = None,
-        analyzers = None,
+        analyzers : list = None,
         ):
         
         self.model = model
@@ -81,16 +84,16 @@ class Trainer:
     
     def train(
         self, 
-        num_iters,
-        optimizers,
-        show_progress = True,
-        validate_every = None,
-        test_sampler = None,
-        metrics = [l2],
-        idx_printed_metric = None,
-        training_start_callbacks = [],
-        epoch_end_callbacks = [],
-        training_end_callbacks = []
+        num_iters : int,
+        optimizers : list,
+        show_progress : bool = True,
+        validate_every : int = None,
+        test_sampler : Sampler = None,
+        metrics : list = [l2],
+        idx_printed_metric : list = None,
+        training_start_callbacks : list = [],
+        epoch_end_callbacks : list = [],
+        training_end_callbacks : list = []
         ):
         
         iters = []
