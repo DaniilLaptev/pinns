@@ -28,7 +28,7 @@ class Domain:
                 raise AttributeError(f'There are no such variable: {key}')
             return self.domain[:, self.names.index(key)]
         
-        elif isinstance(key, int) and self.domain.shape[1] > 1:
+        elif isinstance(key, int):
             return self.domain[:,key]
         
         else:    

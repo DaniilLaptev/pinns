@@ -12,7 +12,8 @@ class InformationPropagation:
         strategy = 'loss',
         compute_every = 1,
         residual = None,
-        group_at_finish = False
+        group_at_finish = False,
+        first_initial = True
         ):
         
         if strategy in ['error', 'both'] and values is None:
@@ -35,6 +36,7 @@ class InformationPropagation:
         self.dists = None
         
         self.group_at_finish = group_at_finish
+        self.first_initial = first_initial
         
         self.precompute(domain)
         
@@ -44,9 +46,16 @@ class InformationPropagation:
             pts = torch.hstack(list(self.pts.values()))
         else:
             pts = self.pts
-        distances = [pts[:,0]]
         
-        for i in range(1, domain.num_vars):
+        distances = []
+        if self.first_initial:
+            distances.append(pts[:,0])
+            start = 1
+            
+        else:
+            start = 0
+            
+        for i in range(start, domain.num_vars):
             A, B = domain[i]
             left_dists  = (pts[:,i] - A).abs()
             right_dists = (pts[:,i] - B).abs()

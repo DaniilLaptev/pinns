@@ -28,7 +28,7 @@ class RandomSampler(Sampler):
                 pts[k].requires_grad = True
         
         else:
-            a, b = self.domain[0], self.domain[1]
+            a, b = self.domain.domain[0], self.domain.domain[1]
             pts = torch.rand(self.num_pts, num_vars, requires_grad=True) * (b - a) + a
         
         return pts
